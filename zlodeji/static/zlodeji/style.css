@@ -1,0 +1,11 @@
+body{
+    background: #ff383a url("images/background.jpg");
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-brand{
+    font-family: 'Dancing Script', cursive;
+}
