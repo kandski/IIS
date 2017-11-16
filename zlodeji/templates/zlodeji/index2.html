@@ -1,0 +1,164 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Zlodej{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+    <div class="container-fluid songs-container">
+        {% for zlodej in all_zlodejs %}
+            {% if user.is_authenticated %}
+                <div class="row">
+                    <!-- Left Album Info -->
+                    <div class="col-sm-4 col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <a href="">
+                                    {% if zlodej.fotka %}
+                                        <img src="{{ zlodej.fotka }}" class="img-responsive">
+                                    {% else %}
+                                        <h3>No image to display</h3>
+                                    {% endif %}
+                                </a>
+                                <h1>{{ zlodej.username }}
+                                    <small></small>
+                                </h1>
+                                <h2></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Song Info -->
+                    <div class="col-sm-8 col-md-9">
+
+                    <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                        <li role="presentation" class="active"><a href="">View All</a></li>
+                        <li role="presentation"><a href="{% url 'zlodej:zlocin-add' %}">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                            Add Zlocin
+                        </a></li>
+                    </ul>
+
+                    <div class="panel panel-default">
+                    <div class="panel-body">
+
+                    <h3>Zlocins</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Audio File</th>
+                        <th>Favorite</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for zlocin in urobil %}
+                        {% if zlocin.prezivka_id == user.username %}
+
+                            <tr>
+                            <td>{{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}</td>
+                            <td>
+                                <a target="_blank" href="">
+                                    <button type="button"
+                                            class="btn btn-success btn-xs">
+                                        <span class="glyphicon glyphicon-play"></span>&nbsp;
+                                        Play
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" class="btn-favorite"><span
+                                        class="glyphicon glyphicon-star"></span></a>
+                            </td>
+                            <td>
+                            <form action="" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden"
+                                   name="zlocin_id" value="{{ zlocin.id_zlocinu }"/>
+                            <button type="submit" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                            Delete
+                            </button>
+                            </form>
+
+                            </td>
+                            </tr>
+                        {% endif %}
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                    <div class="panel panel-default">
+                    <div class="panel-body">
+
+                    <h3>Zlocins</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Audio File</th>
+                        <th>Favorite</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for zlocin in urobil %}
+                        {% if zlocin.prezivka_id == user.username %}
+
+                            <tr>
+                            <td>{{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}</td>
+                            <td>
+                                <a target="_blank" href="">
+                                    <button type="button"
+                                            class="btn btn-success btn-xs">
+                                        <span class="glyphicon glyphicon-play"></span>&nbsp;
+                                        Play
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" class="btn-favorite"><span
+                                        class="glyphicon glyphicon-star"></span></a>
+                            </td>
+                            <td>
+                            <form action="" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden"
+                                   name="zlocin_id" value="{{ zlocin.id_zlocinu }"/>
+                            <button type="submit" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                            Delete
+                            </button>
+                            </form>
+
+                            </td>
+                            </tr>
+                        {% endif %}
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+{% endblock %}

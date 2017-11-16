@@ -25,19 +25,21 @@ SECRET_KEY = 'lwtu41y^#(!g*)q-nyptys%bx7f-4_7c4_xu#2$rfh4j9048i2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.38', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'zlodeji.apps.ZlodejiConfig',
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'zlodeji.apps.ZlodejiConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'CechZlodeju.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['zlodeji/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,7 +77,7 @@ WSGI_APPLICATION = 'CechZlodeju.wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbname',
         'USER': 'user',
@@ -123,3 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+AUTH_USER_MODEL = 'zlodeji.Zlodej'

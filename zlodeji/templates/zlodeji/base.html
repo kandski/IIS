@@ -2,9 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Viberr{% endblock %}</title>
+    <title>{% block title %}Cech Zlodeju{% endblock %}</title>
     <!-- Loads the path to static file -->
     {% load static %}
+    <link rel="apple-touch-icon" sizes="57x57"
+          href="{% static 'zlodeji/images/favicon' %}/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{% static 'zlodeji/images/favicon/' %}/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="{% static 'zlodeji/images/favicon/' %}/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{% static 'zlodeji/images/favicon/' %}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="{% static 'zlodeji/images/favicon/' %}/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="{% static 'zlodeji/images/favicon/' %}/favicon-16x16.png">
+    <link rel="manifest" href="{% static 'zlodeji/images/favicon/' %}/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage"
+          content="{% static 'zlodeji/images/favicon/' %}/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -13,66 +44,87 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'zlodeji/style.css' %}">
 
+
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#topNavBar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{% url 'music:index' %}">Kandski</a>
-            </div>
-            <!-- Items -->
-            <div class="collapse navbar-collapse" id="topNavBar">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="{% url 'music:index' %}">
-                            <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp;
-                            Albums
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;
-                            Songs
-                        </a>
-                    </li>
-                </ul>
+<nav class="navbar navbar-wrapper">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#topNavBar">
+                <span class="icon-bar" style="background-color: #3b7eb6"></span>
+                <span class="icon-bar" style="background-color: #3b7eb6"></span>
+                <span class="icon-bar" style="background-color: #3b7eb6"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'zlodej:index' %}">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            </a>
+        </div>
+        <!-- Items -->
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    {% if user.is_superuser %}
+                        <li class="">
+                            <a href="{% url 'admin:index' %}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                                Admin site
+                            </a>
+                        </li>
+                    {% elif user.is_authenticated %}
 
-                <form class="navbar-form navbar-left" role="search" method="get" action="#">
-
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="q" value="">
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="">
-                        <a href="{% url 'music:album-add' %}">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                            Add Album
+                        <a href="#"
+                           style="background-color: transparent; text-decoration: none; color: #337ab7; cursor: default;">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                            Zlodej: {{ user.username }}
                         </a>
-                    </li>
+                        </li>
+                    {% endif %}
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="{% url 'zlodej:zlodej-add' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                        Add Zlodej
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{% url 'zlodej:zlocin-add' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                        Add Zlocin
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{% url 'zlodej:urobil-add' %}">
+                        <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>&nbsp;
+                        Assign zlocin to zlodej
+                    </a>
+                </li>
+
+                {% if user.is_authenticated %}
                     <li class="">
-                        <a href="#">
+                        <a href="{% url 'zlodej:logout' %}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;
                             Logout
                         </a>
                     </li>
+                {% else %}
+                    <li class="">
+                        <a href="{% url 'zlodej:login' %}">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;
+                            Login / Register
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
 
-
-                </ul>
-
-            </div>
         </div>
-    </nav>
+    </div>
+</nav>
 {% block body %}
 {% endblock %}
+
 </body>
 </html>

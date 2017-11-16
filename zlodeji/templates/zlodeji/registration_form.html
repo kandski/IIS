@@ -1,0 +1,43 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Register{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+
+    <body>
+
+    <div id="id01" class="modal">
+        <span id="xclose" onclick="document.getElementById('id01').style.display='none'"
+              class="close">×</span>
+        <form class="form-horizontal container modal-content" action="" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'zlodeji/form-template.html' %}
+            <div class="form-group">
+                <div class="center col-md-4">
+                    <button type="submit" class="btn-reg btn-success">Register</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+        var close = document.getElementById('xclose');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                window.location.href = "{% url 'zlodej:index' %}";
+
+            }
+            if (event.target === close) {
+                window.location.href = "{% url 'zlodej:index' %}";
+            }
+        }
+    </script>
+
+{% endblock %}

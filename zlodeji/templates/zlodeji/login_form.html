@@ -1,0 +1,59 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Login{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+
+
+    <body>
+
+    <div id="id01" class="modal">
+        <span id="xclose" onclick="document.getElementById('id01').style.display='none'"
+              class="close">×</span>
+        <form class="form-horizontal container modal-content" action="" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="">
+                    <label class="col-sm-10">{{ field.label_tag }}</label>
+                    <div class="col-sm-10">{{ field }}</div>
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <div class="col-offset-10 col-sm-10">
+                    <button type="submit" class="btn-reg btn-success">Login</button>
+                </div>
+                <div class="col-sm-10">
+                    <button type="button"
+                            onclick="window.location.href = '{% url 'zlodej:register' %}'"
+                            class="btn-reg btn-info">Register
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+        var close = document.getElementById('xclose');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                window.location.href = "{% url 'zlodej:index' %}";
+
+            }
+            if (event.target === close) {
+                window.location.href = "{% url 'zlodej:index' %}";
+            }
+        }
+    </script>
+
+{% endblock %}
