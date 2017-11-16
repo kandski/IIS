@@ -7,4 +7,4 @@ Easy Django tutorial from web running on MySQL database and everything packed in
 - Install __docker-compose__ if not installed - check with ```docker-compose --version```
 - Run ```docker-compose build```
 - Run ```docker-compose up```
-- Open ```localhost:8000/music```
+- Open ```localhost:8000/```
