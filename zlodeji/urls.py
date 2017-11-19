@@ -20,5 +20,7 @@ urlpatterns = [
     re_path(r'urobil/(?P<pk>[a-zA-Z]+)/$', views.UrobilUpdate.as_view(), name='urobil-update'),
 
     re_path(r'zlodej/(?P<pk>[a-zA-Z]+)/delete/$', views.ZlodejDelete.as_view(), name='zlodej-delete'),
+    re_path(r'skolenie/(?P<pk>[a-zA-Z]+)/approve/$', views.SkolenieApprove.as_view(), name='approve'),
+    re_path(r'statistics/$', views.Statistics.as_view(), name='stat'),
 
 ]

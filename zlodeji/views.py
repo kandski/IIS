@@ -4,10 +4,14 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.db.models import Count
+
 
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 
 class IndexView(generic.ListView):
@@ -127,6 +131,7 @@ class LogInView(View):
 
     # process form data
     def post(self, request):
+        form = self.form_class(None)
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -146,5 +151,31 @@ class LogOutView(LoginRequiredMixin,View):
         return redirect('zlodej:index')
 
 
+class SkolenieApprove(LoginRequiredMixin, UpdateView):
+    model = Skolenie
+    fields = ['schvalene']
 
 
+
+
+class Statistics(generic.ListView):
+    template_name = 'zlodeji/stat.html'
+    cxd = Urobil.objects.annotate(zlocin_num=Count('prezivka'))
+    def get_queryset(self):
+        return Urobil.objects.all()
+
+
+    def get_context_data(self, **kwargs):
+        context = super(Statistics, self).get_context_data(**kwargs)
+        context['all_zlodejs'] = Zlodej.objects.all()
+        context['zlodej_count'] = Zlodej.objects.count()
+        context['zlocin_count'] = Urobil.objects.count()
+        context['skolenie_count'] = BolNa.objects.count()
+        context['vybavenie_count'] = Vlastnil.objects.count()
+        context['urobil'] = Urobil.objects.all()
+        context['all_zlocin'] = Zlocin.objects.all()
+        context['dostal'] =  Dostal.objects.all()
+        context['eviduje'] = Eviduje.objects.all()
+        context['vlastnil'] = Vlastnil.objects.all()
+        context['bolna'] = BolNa.objects.all()
+        return context

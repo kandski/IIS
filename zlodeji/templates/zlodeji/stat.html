@@ -1,0 +1,139 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Zlodej{% endblock %}
+{% block albums_active %}active{% endblock %}
+{% load tags %}
+{% block chart1 %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Zlodej', 'Počet zločinov'],
+                {% for zlocin in urobil %}
+                    ['{{ zlocin.prezivka }}', '{{ zlocin.prezivka|count_zlocins }}'],
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Počet vykonaných zločinov',
+                legend: {position: 'none'},
+                colors: ['#3b7eb6'],
+                backgroundColor: {fill: '#f2f2f2'}
+            };
+
+            var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid songs-container">
+        {% for zlodej in all_zlodejs %}
+            {% if user.username == zlodej.username %}
+
+                {% if user.is_authenticated %}
+                    <div class="row">
+                    <!-- Left Album Info -->
+                    <div class="col-sm-4 col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <a href="">
+                                    {% if zlodej.fotka %}
+                                        <img src="{{ zlodej.fotka }}" class="img-responsive">
+                                    {% else %}
+                                        <h3>No image to display</h3>
+                                    {% endif %}
+                                </a>
+                                <h1>{{ zlodej.username }}
+                                    <small></small>
+                                </h1>
+                                {% if zlodej.meno %}
+                                    <h3>Meno: {{ zlodej.meno }}</h3>
+                                {% else %}
+                                    <h3>Meno: ---------</h3>
+                                {% endif %}
+                                <h3>Odmena: {{ zlodej.odmena }}</h3>
+                                <h3>Rodné číslo: {{ zlodej.rc }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9">
+                        <div class="well">
+                            <h4>Dashboard</h4>
+                            <p>Tu je prosím pekne štatistika týkajúca sa zlodejov a nindžov.</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="well">
+                                    <h4>Počet zlodejov</h4>
+                                    <p>{{ zlodej_count }} Zlodej/i</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="well">
+                                    <h4>Počet vykonaných zločinov</h4>
+                                    <p>{{ zlocin_count }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="well">
+                                    <h4>Celkový počet absolvovaných školení</h4>
+                                    <p>{{ skolenie_count }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="well">
+                                    <h4>Počet vlastneného vybavenia</h4>
+                                    <p>{{ vybavenie_count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="well">
+                                    <div id="chart_div"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <p>Text</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

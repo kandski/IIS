@@ -5,12 +5,13 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Zlodej(AbstractUser):
-    prezivka = models.CharField(max_length=30, primary_key=True)
+    prezivka = models.CharField(max_length=30, primary_key=True, unique=True)
     meno = models.CharField(max_length=30)
     rc = models.CharField(max_length=11)
     zivy = models.BooleanField(default=True)
     odmena = models.IntegerField()
     fotka = models.CharField(max_length=300)
+
 
     def get_absolute_url(self):
         return reverse('zlodej:detail', kwargs={'pk': self.pk})
@@ -20,6 +21,7 @@ class Zlodej(AbstractUser):
 
 class Skolenie(models.Model):
     level_skoleni = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+    schvalene = models.BooleanField(default=False)
     poznamky = models.CharField(max_length=300)
     zlodej = models.ManyToManyField(Zlodej, through='BolNa')
 
