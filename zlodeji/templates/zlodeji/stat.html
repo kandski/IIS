@@ -1,5 +1,5 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Zlodej{% endblock %}
+{% block title %}Štatistika{% endblock %}
 {% block albums_active %}active{% endblock %}
 {% load tags %}
 {% block chart1 %}
@@ -9,22 +9,51 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
+            var data_zlociny = google.visualization.arrayToDataTable([
                 ['Zlodej', 'Počet zločinov'],
-                {% for zlocin in urobil %}
+                {% for zlocin in urobil_unique %}
                     ['{{ zlocin.prezivka }}', '{{ zlocin.prezivka|count_zlocins }}'],
                 {% endfor %}
             ]);
 
-            var options = {
+            var data_skolenia = google.visualization.arrayToDataTable([
+                ['Zlodej', 'Počet školení'],
+                {% for zlocin in bolna_unique %}
+                    ['{{ zlocin.prezivka }}', '{{ zlocin.prezivka|count_skolenia }}'],
+                {% endfor %}
+            ]);
+            var data_vybavenie = google.visualization.arrayToDataTable([
+                ['Zlodej', 'Počet vlastneného vybavenia'],
+                {% for zlocin in vlastnil_unique %}
+                    ['{{ zlocin.prezivka }}', '{{ zlocin.prezivka|count_vybavenie }}'],
+                {% endfor %}
+            ]);
+
+
+            var options_zlociny = {
                 title: 'Počet vykonaných zločinov',
                 legend: {position: 'none'},
                 colors: ['#3b7eb6'],
                 backgroundColor: {fill: '#f2f2f2'}
             };
+            var options_skolenia = {
+                title: 'Počet zúčastnených školení',
+                legend: {position: 'none'},
+                colors: ['#1cb6b1'],
+                backgroundColor: {fill: '#f2f2f2'}
+            };var options_vybavenie = {
+                title: 'Počet vlastneného vybavenie',
+                legend: {position: 'none'},
+                colors: ['#80b61a'],
+                backgroundColor: {fill: '#f2f2f2'}
+            };
 
             var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-            chart.draw(data, options);
+            chart.draw(data_zlociny, options_zlociny);
+            var chart1 = new google.visualization.Histogram(document.getElementById('chart_div1'));
+            chart1.draw(data_skolenia, options_skolenia);
+            var chart2 = new google.visualization.Histogram(document.getElementById('chart_div2'));
+            chart2.draw(data_vybavenie, options_vybavenie);
         }
     </script>
 {% endblock %}
@@ -59,76 +88,143 @@
                                 <h3>Rodné číslo: {{ zlodej.rc }}</h3>
                             </div>
                         </div>
+                        <div class="">
+                            <div class="well">
+                                <h2>TOP 10 zlodeji podľa zločinov</h2>
+                                <table>
+                                    <ul class="list-group">
+                                        {% for zlocin in bolna_unique %}
+                                            <li class="list-group-item">
+                                                {{ zlocin.prezivka }}
+                                                <span class="badge">
+                                                    {{ zlocin.prezivka|count_zlocins }}
+                                                </span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+
 
                     <div class="col-sm-9">
                         <div class="well">
-                            <h4>Dashboard</h4>
-                            <p>Tu je prosím pekne štatistika týkajúca sa zlodejov a nindžov.</p>
+                            <h4>Počet zlodejov</h4>
+                            <h2><span class="label label-default">{{ zlodej_count }} Zlodej/i</span>
+                            </h2>
                         </div>
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="well">
-                                    <h4>Počet zlodejov</h4>
-                                    <p>{{ zlodej_count }} Zlodej/i</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="well">
+
                                     <h4>Počet vykonaných zločinov</h4>
-                                    <p>{{ zlocin_count }}
-                                    </p>
+                                    <h2><span class="label label-default">{{ zlocin_count }}</span>
+                                    </h2>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="well">
-                                    <h4>Celkový počet absolvovaných školení</h4>
-                                    <p>{{ skolenie_count }}</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="well">
-                                    <h4>Počet vlastneného vybavenia</h4>
-                                    <p>{{ vybavenie_count }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="well">
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="well">
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="well">
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                    <p>Text</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-8">
                                 <div class="well">
                                     <div id="chart_div"></div>
                                 </div>
                             </div>
+                            <!--- <div class="col-sm-3">
+
+                             </div>
+                             <div class="col-sm-3">
+
+                             </div>--->
+                        </div>
+                        <div class="row">
                             <div class="col-sm-4">
                                 <div class="well">
+                                    <h4>Celkový počet absolvovaných školení</h4>
+                                    <h2><span
+                                            class="label label-default">{{ skolenie_count }}</span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                    <div id="chart_div1"></div>
+
+                                </div>
+                            </div>
+                            <!---<div class="col-sm-4">
+                                <div class="well">
                                     <p>Text</p>
+                                    <p>Text</p>
+                                    <p>Text</p>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <h4>Počet vlastneného vybavenia</h4>
+                                    <h2><span
+                                            class="label label-default">{{ vybavenie_count }}</span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="well">
+                                    <div id="chart_div2"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="well">
+                                    <h4>Počet vydaných povolení</h4>
+                                    <h2><span class="label label-default">NEW</span></h2>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="well">
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container col-sm-12">
+                            <h2>Carousel Example</h2>
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0"
+                                        class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <img src="la.jpg" alt="Los Angeles" style="width:100%;">
+                                    </div>
+
+                                    <div class="item">
+                                        <img src="chicago.jpg" alt="Chicago" style="width:100%;">
+                                    </div>
+
+                                    <div class="item">
+                                        <img src="ny.jpg" alt="New york" style="width:100%;">
+                                    </div>
+                                </div>
+
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel"
+                                   data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel"
+                                   data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
 
                     </div>
                 {% endif %}

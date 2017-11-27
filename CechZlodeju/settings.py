@@ -84,6 +84,8 @@ DATABASES = {
         'PASSWORD': 'pass',
         'HOST': 'db',
         'PORT': 3306,
+        'TEST_CHARSET': "utf8mb4",
+        'TEST_COLLATION': "utf8_general_ci",
     }
 }
 
@@ -110,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'sk-sk'
 
 TIME_ZONE = 'Europe/Prague'
 

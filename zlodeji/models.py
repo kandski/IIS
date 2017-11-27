@@ -25,6 +25,12 @@ class Skolenie(models.Model):
     poznamky = models.CharField(max_length=300)
     zlodej = models.ManyToManyField(Zlodej, through='BolNa')
 
+    def get_absolute_url(self):
+        return reverse('zlodej:index')
+
+    def __str__(self):
+        return self.poznamky + '-' + self.level_skoleni.__str__()
+
 
 class Rajon(models.Model):
     nazov_rajonu = models.CharField(max_length=40, primary_key=True)
@@ -47,7 +53,7 @@ class Vydriduch(models.Model):
     provizia = models.FloatField(validators=[MinValueValidator(0)])
 
     def __str__(self):
-        return self.zlodej
+        return self.zlodej.prezivka
 
 
 class Lupeznik(models.Model):
@@ -56,7 +62,7 @@ class Lupeznik(models.Model):
     pocet_zabitych = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.zlodej
+        return self.zlodej.prezivka
 
 
 class TypZlocinu(models.Model):
@@ -99,6 +105,7 @@ class Vybavenie(models.Model):
     meno = models.CharField(max_length=30)
     id_typu_vybavenia = models.ForeignKey(TypVybavenia, on_delete=models.CASCADE)
     zlodej = models.ManyToManyField(Zlodej, through='Vlastnil')
+    priradene = models.BooleanField(default=False)
 
 
 class Vlastnil(models.Model):
@@ -106,6 +113,9 @@ class Vlastnil(models.Model):
     id_vybavenia = models.ForeignKey(Vybavenie, on_delete=models.CASCADE)
     od = models.DateField()
     do = models.DateField()
+
+    def __str__(self):
+        return self.id_vybavenia.meno + ' - ' + self.id_vybavenia.id_typu_vybavenia.nazov
 
 
 class Urobil(models.Model):
@@ -120,6 +130,8 @@ class BolNa(models.Model):
     id_skolenia = models.ForeignKey(Skolenie, on_delete=models.CASCADE)
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('zlodej:index')
 
 class Eviduje(models.Model):
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
@@ -138,7 +150,14 @@ class SkolenieVybavenia(models.Model):
     id_skolenia = models.ForeignKey(Skolenie, on_delete=models.CASCADE)
     id_typu_vybavenia = models.ForeignKey(TypVybavenia, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.id_skolenia.poznamky + '-' + self.id_typu_vybavenia.nazov
 
 class SkolenieZlocinu(models.Model):
     id_skolenia = models.ForeignKey(Skolenie, on_delete=models.CASCADE)
     id_typu_zlocinu = models.ForeignKey(TypZlocinu, on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.id_skolenia.poznamky + '-' + self.id_typu_zlocinu.druh
+

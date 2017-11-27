@@ -5,7 +5,7 @@ class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = User
-        fields = ['username','email', 'prezivka', 'password', 'odmena',
+        fields = ['username','email', 'prezivka','meno', 'password', 'odmena',
                   'rc', 'fotka', 'zivy']
 
 class LoginForm(forms.ModelForm):

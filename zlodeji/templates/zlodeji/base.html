@@ -32,10 +32,13 @@
     <link rel="icon" type="image/png" sizes="16x16"
           href="{% static 'zlodeji/images/favicon/' %}/favicon-16x16.png">
     <link rel="manifest" href="{% static 'zlodeji/images/favicon/' %}/manifest.json">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage"
           content="{% static 'zlodeji/images/favicon/' %}/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -44,6 +47,10 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'zlodeji/style.css' %}">
     {% block chart1 %}
+    {% endblock %}
+    {% block scrollspy %}
+    {% endblock %}
+    {% block skol_style %}
     {% endblock %}
 
 </head>
@@ -84,12 +91,27 @@
 
                     <li>
                         <a href="{% url 'zlodej:stat' %}">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;
                             Štatistiky
                         </a>
                     </li>
                 {% endif %}
-
+                {% if user.is_staff %}
+                    <li>
+                        <a href="{% url 'zlodej:skolenia' %}">
+                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;
+                            Evidencia školení
+                        </a></li>
+                {% endif %}
+                {% if user.is_staff %}
+                    <li>
+                        <a href="{% url 'zlodej:vybavenie' %}">
+                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;
+                            Evidencia vybavenia
+                        </a></li>
+                {% endif %}
+                {% block collapsible %}
+                {% endblock %}
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -106,14 +128,13 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                             Add Zlocin
                         </a>
-                    </li>
+                    </li>#}-->
                     <li class="">
                         <a href="{% url 'zlodej:urobil-add' %}">
                             <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>&nbsp;
                             Assign zlocin to zlodej
                         </a>
                     </li>
-                        #} --->
                     <li class="">
                         <a href="{% url 'zlodej:logout' %}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;

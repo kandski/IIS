@@ -1,5 +1,5 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Add a new album{% endblock %}
+{% block title %}Priradiť zločin{% endblock %}
 {% block albums_active %}active{% endblock %}
 
 {% block body %}
@@ -10,9 +10,19 @@
             <div class="col-sm-12 col-md-7">
                 <div class="panel-body">
 
-                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="" method="post"
+                          enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% include 'zlodeji/form-template.html' %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <span class="text-danger small">{{ field.errors }}</span>
+                                </div>
+                                <label class="control-label col-sm-2">{{ field.label_tag }}</label>
+                                <div class="col-sm-4">{{ field }}</div>
+
+                            </div>
+                        {% endfor %}
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
                                 <button type="submit" class="btn btn-success">Submit</button>

@@ -1,0 +1,349 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Školenia{% endblock %}
+{% block skol_style %}
+    <style>
+
+
+        .panel-table .panel-body {
+            padding: 0;
+        }
+
+        .panel-table .panel-body .table-bordered {
+            border-style: none;
+            margin: 0;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+            text-align: center;
+            width: 100px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+            border-right: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+            border-left: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td {
+            border-bottom: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th {
+            border-top: 0px;
+        }
+
+        .panel-table .panel-footer .pagination {
+            margin: 0;
+        }
+
+        /*
+        used to vertically center elements, may need modification if you're not using default sizes.
+        */
+        .panel-table .panel-footer .col {
+            line-height: 34px;
+            height: 34px;
+        }
+
+        .panel-table .panel-heading .col h3 {
+            line-height: 30px;
+            height: 30px;
+        }
+
+        .panel-table .panel-body .table-bordered > tbody > tr > td {
+            line-height: 34px;
+        }
+
+    </style>
+{% endblock %}
+{% load tags %}
+
+
+{% block body %}
+
+    <div class="container">
+
+
+        <div class="col-sm-18 col-md-12">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1default"
+                                              data-toggle="tab">Školenia na typ vybavenia</a>
+                        </li>
+                        <li><a href="#tab2default" data-toggle="tab">Školenia na typ zločinu</a>
+                        </li>
+
+                        <li role="presentation"><a
+                                href="{% url 'zlodej:zlocin-add' %}">
+                                        <span class="glyphicon glyphicon-plus"
+                                              aria-hidden="true"></span>&nbsp;
+                            Add Zlocin
+                        </a></li>
+                        <li role="presentation"><a href="{% url 'zlodej:skolenie-add' %}">
+                                        <span class="glyphicon glyphicon-plus"
+                                              aria-hidden="true"></span>&nbsp;
+                            Add Skolenie
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <!-- VYBAVENIE---->
+                        <div class="tab-pane fade in active"
+                             id="tab1default">
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+
+                                    <h3>Zločiny</h3>
+
+                                    {% if error_message %}
+                                        <p>
+                                            <strong>{{ error_message }}</strong>
+                                        </p>
+                                    {% endif %}
+                                    <div class="col-sm-2">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            {% for skolenie in sk_vybavenia %}
+                                                <li {% if forloop.first %} class="active" {% endif %}>
+                                                    <a data-toggle="pill"
+                                                       href="#vybavenie{{ skolenie.id_skolenia.id }}">{{ skolenie.id_skolenia.id }}</a>
+                                                </li>
+                                            {% endfor %}
+                                            <!--<li class="active"><a data-toggle="pill" href="#home">Home</a>
+                                            </li>
+
+                                            <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
+                                            <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
+                                            <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>-->
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-sm-10">
+                                        <div class="tab-content">
+                                            {% for skolenie in sk_vybavenia %}
+                                                <div id="vybavenie{{ skolenie.id_skolenia.id }}" class="tab-pane fade">
+                                                    <div class="row">
+                                                        <div class="col-md-10 col-md-offset-1">
+                                                            <div class="panel panel-default panel-table">
+                                                                <div class="panel-heading">
+                                                                    <div class="row">
+                                                                        <div class="col col-xs-6">
+                                                                            <h3 class="panel-title">
+                                                                                {{ skolenie.id_skolenia }}</h3>
+                                                                        </div>
+                                                                        <div class="col col-xs-6 text-right">
+                                                                            <button type="button" class="btn btn-sm btn-primary btn-create">
+                                                                                Create New
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <table class="table table-striped table-bordered table-list">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <em class="fa fa-cog"></em>
+                                                                            </th>
+                                                                            <th class="hidden-xs">Level
+                                                                            </th>
+                                                                            <th>Name</th>
+                                                                            <th>Email</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for ucast in bolna %}
+                                                                            {% if ucast.id_skolenia.id == skolenie.id_skolenia.id %}
+                                                                                <tr>
+                                                                                    <td align="center">
+                                                                                        <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+                                                                                        <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+                                                                                    </td>
+                                                                                    <td class="hidden-xs">
+                                                                                        {{ ucast.id_skolenia.level_skoleni }}
+                                                                                    </td>
+                                                                                    <td>{{ ucast.prezivka }}</td>
+                                                                                    <td>
+                                                                                        {% if not ucast.id_skolenia.schvalene %}
+                                                                                            <span class="glyphicon glyphicon-remove"
+                                                                                                  aria-hidden="true">{{ ucast.id_skolenia.schvalene }}</span>
+                                                                                        {% else %}
+                                                                                            <span class="glyphicon glyphicon-ok"
+                                                                                                  aria-hidden="true">{{ ucast.id_skolenia.schvalene }}</span>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if not ucast.id_skolenia.schvalene %}
+                                                                                            <form action="{% url 'zlodej:approve' ucast.id_skolenia_id %}"
+                                                                                                  method="post" style="display: inline;">
+                                                                                                {% csrf_token %}
+                                                                                                <input type="hidden" name="schvalene"
+                                                                                                       value="1"/>
+                                                                                                <button type="submit" class="btn btn-success btn-xs">
+                                                                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                                                                    Schváliť
+                                                                                                </button>
+                                                                                            </form>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- ZLOCINY ---->
+                        <div class="tab-pane fade" id="tab2default">
+
+
+                            <!-------- Zlocin --------------------------------------------->
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+
+                                    <h3>Školenia</h3>
+
+                                    {% if error_message %}
+                                        <p>
+                                            <strong>{{ error_message }}</strong>
+                                        </p>
+                                    {% endif %}
+                                    <div class="col-sm-2">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            {% for skolenie in sk_zlocinu %}
+                                                <li {% if forloop.first %}
+                                                    class="active" {% endif %}>
+                                                    <a data-toggle="pill"
+                                                       href="#vybaveniez{{ skolenie.id_skolenia.id }}">{{ skolenie.id_skolenia.id }}</a>
+                                                </li>
+                                            {% endfor %}
+                                            <!--<li class="active"><a data-toggle="pill" href="#home">Home</a>
+                                            </li>
+
+                                            <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
+                                            <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
+                                            <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>-->
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-sm-10">
+                                        <div class="tab-content">
+                                            {% for skolenie in sk_zlocinu %}
+                                                <div id="vybaveniez{{ skolenie.id_skolenia.id }}"
+                                                     class="tab-pane fade">
+                                                    <div class="row">
+
+                                                        <div class="col-md-10 col-md-offset-1">
+
+                                                            <div class="panel panel-default panel-table">
+                                                                <div class="panel-heading">
+                                                                    <div class="row">
+                                                                        <div class="col col-xs-6">
+                                                                            <h3 class="panel-title">
+                                                                                {{ skolenie.id_skolenia }}</h3>
+                                                                        </div>
+                                                                        <div class="col col-xs-6 text-right">
+                                                                            <button type="button"
+                                                                                    class="btn btn-sm btn-primary btn-create">
+                                                                                Create New
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <table class="table table-striped table-bordered table-list">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <em class="fa fa-cog"></em>
+                                                                            </th>
+                                                                            <th class="hidden-xs">Level
+                                                                            </th>
+                                                                            <th>Prezívka</th>
+                                                                            <th>Schválené</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for ucast in bolna %}
+                                                                            {% if ucast.id_skolenia.id == skolenie.id_skolenia.id %}
+                                                                                <tr>
+                                                                                    <td align="center">
+                                                                                        <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+                                                                                        <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+                                                                                    </td>
+                                                                                    <td class="hidden-xs">
+                                                                                        {{ ucast.id_skolenia.level_skoleni }}
+                                                                                    </td>
+                                                                                    <td>{{ ucast.prezivka }}</td>
+                                                                                    <td>
+                                                                                        {% if not ucast.id_skolenia.schvalene %}
+                                                                                            <span class="glyphicon glyphicon-remove"
+                                                                                                  aria-hidden="true">{{ ucast.id_skolenia.schvalene }}</span>
+                                                                                        {% else %}
+                                                                                            <span class="glyphicon glyphicon-ok"
+                                                                                                  aria-hidden="true">{{ ucast.id_skolenia.schvalene }}</span>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if not ucast.id_skolenia.schvalene %}
+                                                                                            <form action="{% url 'zlodej:approve' ucast.id_skolenia_id %}"
+                                                                                                  method="post" style="display: inline;">
+                                                                                                {% csrf_token %}
+                                                                                                <input type="hidden" name="schvalene"
+                                                                                                       value="1"/>
+                                                                                                <button type="submit" class="btn btn-success btn-xs">
+                                                                                                    <span class="glyphicon glyphicon-ok"></span>
+                                                                                                    Schváliť
+                                                                                                </button>
+                                                                                            </form>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

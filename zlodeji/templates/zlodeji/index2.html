@@ -1,12 +1,64 @@
 {% extends 'zlodeji/base.html' %}
+{% load static %}
 {% block title %}Zlodej{% endblock %}
-{% block albums_active %}active{% endblock %}
+{% block collapsible %}
+    {% if user.is_superuser %}
+        <li>
+            <a data-toggle="collapse" data-target="#demo">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                Zobraziť všetkých registrovaných zlodejov
+            </a>
+        </li>
+    {% endif %}
 
+{% endblock %}
 {% block body %}
+
     <div class="container-fluid songs-container">
         {% for zlodej in all_zlodejs %}
             {% if user.is_authenticated %}
                 {% if user.username == zlodej.username %}
+                    <div class="alert alert-success alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert"
+                           aria-label="close">&times;</a>
+                        Uživateľ <strong>{{ user.username }}</strong> bol prihlásený.
+                    </div>
+                    {% if user.is_superuser %}
+                        <div id="demo" class="collapse row">
+                            {% for zlodej in all_zlodejs %}
+                                {% if zlodej.username == user.username %}
+                                {% else %}
+                                    <div class="col-sm-4 col-md-3">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <a href="">
+                                                    {% if zlodej.fotka %}
+                                                        <img src="{{ zlodej.fotka }}"
+                                                             class="img-responsive"
+                                                             style="max-height: 200px;">
+                                                    {% else %}
+                                                        <h3>No image to display</h3>
+                                                    {% endif %}
+                                                </a>
+                                                <h1>{{ zlodej.username }}
+                                                    <small></small>
+                                                </h1>
+                                                {% if zlodej.meno %}
+                                                    <h3>Meno: {{ zlodej.meno }}</h3>
+                                                {% else %}
+                                                    <h3>Meno: ---------</h3>
+                                                {% endif %}
+                                                <h3>Odmena: {{ zlodej.odmena }}</h3>
+                                                <h3>Rodné číslo: {{ zlodej.rc }}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+
                     <div class="row">
                         <!-- Left Album Info -->
                         <div class="col-sm-4 col-md-3">
@@ -185,12 +237,16 @@
                                                                     <td>
                                                                         {% if not zlocin.id_skolenia.schvalene %}
                                                                             {% if zlodej.is_superuser %}
-                                                                                <a href="">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-success btn-xs">
-                                                                                        <span class="glyphicon glyphicon-ok"></span>&nbsp;Approve
+                                                                                <form action="{% url 'zlodej:approve' zlocin.id_skolenia_id %}"
+                                                                                      method="post" style="display: inline;">
+                                                                                    {% csrf_token %}
+                                                                                    <input type="hidden" name="schvalene"
+                                                                                           value="1"/>
+                                                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                                                        Schváliť
                                                                                     </button>
-                                                                                </a>
+                                                                                </form>
                                                                             {% endif %}
                                                                         {% endif %}
                                                                     </td>
@@ -276,6 +332,12 @@
                             <!--<li role="presentation"  class="active"><a href="">View All</a></li>-->
                         </ul>
                     </div>
+                {% endif %}
+            {% else %}
+                {% if forloop.first %}
+                    <!--<img src="{% static 'zlodeji/images/down-curved-arrow.png' %}" class="topright">
+                    --><img style="float:right; height: 100px; width: 100px; margin-right: 40px;"
+                            src="{% static 'zlodeji/images/down-curved-arrow.png' %}">
                 {% endif %}
             {% endif %}
         {% endfor %}
