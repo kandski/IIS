@@ -18,42 +18,83 @@
         {% for zlodej in all_zlodejs %}
             {% if user.is_authenticated %}
                 {% if user.username == zlodej.username %}
-                    <div class="alert alert-success alert-dismissable fade in">
-                        <a href="#" class="close" data-dismiss="alert"
-                           aria-label="close">&times;</a>
-                        Uživateľ <strong>{{ user.username }}</strong> bol prihlásený.
-                    </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert"
+                                   aria-label="close">&times;</a>
+                                Uživateľ <strong>{{ user.username }}</strong> bol prihlásený.
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     {% if user.is_superuser %}
                         <div id="demo" class="collapse row">
+
                             {% for zlodej in all_zlodejs %}
-                                {% if zlodej.username == user.username %}
-                                {% else %}
-                                    <div class="col-sm-4 col-md-3">
-                                        <div class="panel panel-default">
-                                            <div class="panel-body">
-                                                <a href="">
-                                                    {% if zlodej.fotka %}
-                                                        <img src="{{ zlodej.fotka }}"
-                                                             class="img-responsive"
-                                                             style="max-height: 200px;">
-                                                    {% else %}
-                                                        <h3>No image to display</h3>
-                                                    {% endif %}
-                                                </a>
-                                                <h1>{{ zlodej.username }}
-                                                    <small></small>
-                                                </h1>
-                                                {% if zlodej.meno %}
-                                                    <h3>Meno: {{ zlodej.meno }}</h3>
-                                                {% else %}
-                                                    <h3>Meno: ---------</h3>
-                                                {% endif %}
-                                                <h3>Odmena: {{ zlodej.odmena }}</h3>
-                                                <h3>Rodné číslo: {{ zlodej.rc }}</h3>
-                                            </div>
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <h3>{{ zlodej.username }}
+                                                <small></small>
+                                            </h3>
+                                            {% if zlodej.meno %}
+                                                <h4>Meno: {{ zlodej.meno }}</h4>
+                                            {% else %}
+                                                <h4>Meno: ---------</h4>
+                                            {% endif %}
+                                            <h5>Odmena: {{ zlodej.odmena }}</h5>
+                                            <h5>Rodné číslo: {{ zlodej.rc }}</h5>
+
+                                            {% if zlodej.is_superuser %}
+                                                <form action="{% url 'zlodej:superuser' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_superuser"
+                                                           value="False"/>
+                                                    <button type="submit" class="btn btn-danger btn-xs">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        Superuser
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <form action="{% url 'zlodej:superuser' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_superuser"
+                                                           value="True"/>
+                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        Superuser
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+
+                                            {% if zlodej.is_staff %}
+                                                <form id="staffik" action="{% url 'zlodej:staff' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_staff"
+                                                           value="False"/>
+                                                    <button type="submit" class="btn btn-danger btn-xs">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        Staff
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <form id="staffik" action="{% url 'zlodej:staff' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_staff"
+                                                           value="True"/>
+                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        Staff
+                                                    </button>
+                                                </form>
+                                            {% endif %}
                                         </div>
                                     </div>
-                                {% endif %}
+                                </div>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -90,37 +131,50 @@
                             <div class="panel with-nav-tabs panel-default">
                                 <div class="panel-heading">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a href="#tab1default"
-                                                              data-toggle="tab">Zločiny</a>
+                                        <li class="active">
+                                            <a href="#tab1default" data-toggle="tab">
+                                                Zločiny
+                                            </a>
                                         </li>
-                                        <li><a href="#tab2default" data-toggle="tab">Školenia</a>
+                                        <li>
+                                            <a href="#tab2default" data-toggle="tab">
+                                                Školenia
+                                            </a>
                                         </li>
-                                        <li><a href="#tab3default"
-                                               data-toggle="tab">Rajóny</a></li>
+                                        <li>
+                                            <a href="#tab3default" data-toggle="tab">
+                                                Rajóny
+                                            </a>
+                                        </li>
                                         <li class="dropdown">
-                                            <a href="#" data-toggle="dropdown">Dropdown
-                                                <span
-                                                        class="caret"></span></a>
+                                            <a href="#" data-toggle="dropdown">
+                                                Dropdown
+                                                <span class="caret"></span>
+                                            </a>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#tab4default"
-                                                       data-toggle="tab">Default
-                                                    4</a></li>
-                                                <li><a href="#tab5default"
-                                                       data-toggle="tab">Default
-                                                    5</a></li>
+                                                <li>
+                                                    <a href="#tab4default" data-toggle="tab">
+                                                        Default 4
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab5default" data-toggle="tab">
+                                                        Default 5
+                                                    </a>
+                                                </li>
                                             </ul>
+
                                         </li>
-                                        <li role="presentation"><a
-                                                href="{% url 'zlodej:zlocin-add' %}">
-                                        <span class="glyphicon glyphicon-plus"
-                                              aria-hidden="true"></span>&nbsp;
-                                            Add Zlocin
-                                        </a></li>
-                                        <li role="presentation"><a href="#">
-                                        <span class="glyphicon glyphicon-plus"
-                                              aria-hidden="true"></span>&nbsp;
-                                            Add Skolenie
-                                        </a></li>
+                                         <li>
+                                            <a href="" data-toggle="tab">
+                                                Evidovať rajon
+                                            </a>
+                                        </li>
+                                         <li>
+                                            <a href="" data-toggle="tab">
+                                                Evidovať vybavenie
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="panel-body">
@@ -161,31 +215,25 @@
 
                                                                     </td>
                                                                     <td>
-                                                                        <form action=""
-                                                                              method="post"
-                                                                              style="display: inline;">
+                                                                        <form action="" method="post" style="display: inline;">
                                                                             {% csrf_token %}
-                                                                            <input type="hidden"
-                                                                                   name="zlocin_id"
-                                                                                   value="{{ zlocin.id_zlocinu }}"/>
-                                                                            <button type="submit"
-                                                                                    class="btn btn-danger btn-xs">
+                                                                            <input type="hidden" name="zlocin_id" value="{{ zlocin.id_zlocinu }}"/>
+                                                                            <button type="submit" class="btn btn-danger btn-xs">
                                                                                 <span class="glyphicon glyphicon-remove"></span>&nbsp;
                                                                                 Delete
                                                                             </button>
                                                                         </form>
-
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="{% url 'zlodej:detail' %}">Detail</a>
                                                                     </td>
                                                                 </tr>
                                                             {% endif %}
-
                                                         {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                         <div class="tab-pane fade" id="tab2default">
 

@@ -15,9 +15,9 @@
                                         <h2 class="timeline-title">{{ typ.nazov }}</h2>
                                     </div>
                                     <div class="timeline-body">
-                                        <img src="{% static 'zlodeji/images/Obrazok_15.JPG' %}" style="max-height: 100px; max-width: 200px;">
-                                        <P><a data-toggle="pill"
-                                              href="#vybavenie{{ typ.nazov }}">{{ typ.nazov }}</a></P>
+                                        <p><a data-toggle="pill" href="#vybavenie{{ typ.nazov }}">
+                                            <img src="{% static 'zlodeji/images/' %}{{ typ.nazov }}.png" style="max-height: 100px; max-width: 200px;">
+                                        </a></p>
                                     </div>
                                 </div>
                             </li>
@@ -40,8 +40,9 @@
                                                             {{ typ.nazov }}</h3>
                                                     </div>
                                                     <div class="col col-xs-6 text-right">
-                                                        <button type="button" class="btn btn-sm btn-primary btn-create">
-                                                            Create New
+                                                        <button type="button" class="btn btn-sm btn-primary btn-create"
+                                                                onclick="addvybavenie();">
+                                                            Pridať vybavenie
                                                         </button>
                                                     </div>
                                                 </div>
@@ -51,25 +52,24 @@
                                                     <thead>
                                                     <tr>
                                                         <th>
-                                                            <em class="fa fa-cog"></em>
                                                         </th>
-                                                        <th class="hidden-xs">Level
-                                                        </th>
-                                                        <th>Name</th>
-                                                        <th>Email</th>
+                                                        <th>Názov</th>
+                                                        <th>Zlodej</th>
+                                                        <th>Vlastnené od</th>
+                                                        <th>Vlastnené do</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for vybavenie in vlastnil %}
-                                                        {% if vybavenie.id_typu_vybavenia == typ.nazov %}
+                                                        <h1></h1>
+                                                        {% if vybavenie.id_vybavenia.id_typu_vybavenia == typ %}
                                                             <tr>
                                                                 <td align="center">
-                                                                    <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
-                                                                    <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
                                                                 </td>
-                                                                <td class="hidden-xs">
-                                                                </td>
-                                                                <td>{{ vybavenie.meno }}</td>
+                                                                <td>{{ vybavenie.id_vybavenia.meno }}</td>
+                                                                <td>{{ vybavenie.prezivka }}</td>
+                                                                <td>{{ vybavenie.od }}</td>
+                                                                <td>{{ vybavenie.do }}</td>
 
                                                             </tr>
                                                         {% endif %}

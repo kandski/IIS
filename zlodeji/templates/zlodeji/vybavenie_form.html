@@ -1,11 +1,11 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Add a new album{% endblock %}
+{% block title %}Priradiť vybavenie{% endblock %}
 {% block albums_active %}active{% endblock %}
-
+{% load widget_tweaks %}
 {% block body %}
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
 
             <div class="col-sm-12 col-md-7">
                 <div class="panel-body">
@@ -15,10 +15,9 @@
                         {% include 'zlodeji/form-template.html' %}
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success">Potvrdiť</button>
                             </div>
                         </div>
-
                     </form>
 
                 </div>

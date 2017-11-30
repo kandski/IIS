@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Cech Zlodeju{% endblock %}</title>
+    <title>ISCZ - {% block title %}Cech Zlodeju{% endblock %}</title>
     <!-- Loads the path to static file -->
     {% load static %}
+    {% load widget_tweaks %}
+
     <link rel="apple-touch-icon" sizes="57x57"
           href="{% static 'zlodeji/images/favicon' %}/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60"
@@ -44,8 +46,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'zlodeji/style.css' %}">
+
     {% block chart1 %}
     {% endblock %}
     {% block scrollspy %}
@@ -64,6 +70,12 @@
                 <span class="icon-bar" style="background-color: #3b7eb6"></span>
                 <span class="icon-bar" style="background-color: #3b7eb6"></span>
                 <span class="icon-bar" style="background-color: #3b7eb6"></span>
+            </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" onclick="window.close()">
+                <a href="#">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;
+                    Zavri
+                </a>
             </button>
             <a class="navbar-brand" href="{% url 'zlodej:index' %}">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
@@ -110,6 +122,13 @@
                             Evidencia vybavenia
                         </a></li>
                 {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="">
+                        <a href="{% url 'zlodej:povolenia' %}">
+                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;
+                            Povolenia
+                        </a></li>
+                {% endif %}
                 {% block collapsible %}
                 {% endblock %}
             </ul>
@@ -117,23 +136,36 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                     <!---{#
-                    <li class="">
-                        <a href="{% url 'zlodej:zlodej-add' %}">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                            Add Zlodej
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'zlodej:zlocin-add' %}">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                            Add Zlocin
-                        </a>
-                    </li>#}-->
-                    <li class="">
-                        <a href="{% url 'zlodej:urobil-add' %}">
-                            <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>&nbsp;
-                            Assign zlocin to zlodej
-                        </a>
+                    #}-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" href="#">Formuláre<span class="caret"></span> </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+
+                                </a>
+                            </li>
+                            <li class="">
+                                <a onclick="addzlocin()" href="">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridaj Zločin
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="" onclick="addvybavenie()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridať vybavenie
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="" onclick="addskolenie()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridať školenie
+                                </a>
+                            </li>
+                        </ul>
+
                     </li>
                     <li class="">
                         <a href="{% url 'zlodej:logout' %}">
@@ -156,6 +188,27 @@
 </nav>
 {% block body %}
 {% endblock %}
+<script>
 
+    function addzlocin() {
+        window.open("{% url 'zlodej:urobil-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+    }
+
+    function assignzlocin() {
+        window.open("{% url 'zlodej:urobil-add' %}", "Priradiť zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+    }
+
+    function addvybavenie() {
+        window.open("{% url 'zlodej:vlastnil-add' %}", "Pridať vybavenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+    }
+
+    function addskolenie() {
+        window.open("{% url 'zlodej:skolenie-add' %}", "Pridať školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+    }
+
+</script>
+<div class="footer">
+    ©Copyright: Rastislav Kanda - Jakub Klemens (xkanda00 - xkleme11)
+</div>
 </body>
 </html>

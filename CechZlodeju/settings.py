@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'lwtu41y^#(!g*)q-nyptys%bx7f-4_7c4_xu#2$rfh4j9048i2'
 DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.1.38', 'localhost']
-
 
 # Application definition
 
@@ -39,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'zlodeji.apps.ZlodejiConfig',
-
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -72,12 +70,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CechZlodeju.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-   'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbname',
         'USER': 'user',
@@ -88,7 +85,6 @@ DATABASES = {
         'TEST_COLLATION': "utf8_general_ci",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
@@ -108,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
@@ -121,7 +116,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/

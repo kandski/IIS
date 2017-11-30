@@ -1,21 +1,43 @@
 {% extends 'zlodeji/base.html' %}
 {% block title %}Register{% endblock %}
 {% block albums_active %}active{% endblock %}
-
+{% load widget_tweaks %}
 {% block body %}
 
-    <body>
-
-    <div id="id01" class="modal">
+    <div id="id01" class="modal" style="text-align: center; margin: 0 auto;">
         <span id="xclose" onclick="document.getElementById('id01').style.display='none'"
-              class="close">×</span>
+              class="login close">×</span>
         <form class="form-horizontal container modal-content" action="" method="post"
               enctype="multipart/form-data">
             {% csrf_token %}
-            {% include 'zlodeji/form-template.html' %}
-            <div class="form-group">
-                <div class="center col-md-4">
-                    <button type="submit" class="btn-reg btn-success">Register</button>
+            {% for field in form.visible_fields %}
+                <div class="form-group col-md-12">
+                    {{ field.label_tag }}
+
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {% render_field field class="form-control is-invalid" %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {% render_field field class="form-control is-valid" %}
+                        {% endif %}
+                    {% else %}
+                        {% render_field field class="form-control" %}
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-group col-md-12">
+                <div class="">
+                    <button type="submit" class="btn-reg btn-success">Zaregistrovať</button>
                 </div>
             </div>
 

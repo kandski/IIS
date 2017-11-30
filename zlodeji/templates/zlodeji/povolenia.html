@@ -1,0 +1,60 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Povolenia{% endblock %}
+{% load static %}
+{% block body %}
+
+    <div class="page-header center">
+        <h1 style="padding-left: 40%;">Povolenia</h1>
+        <p style="padding-left: 35%;">Zoznam aktuálne dostupných povolení na vykonanie zločinu</p>
+    </div>
+
+    <div class="container">
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-list">
+                <thead>
+                <tr>
+                    <th align="center">
+                        Rajon
+                    </th>
+                    <th align="center">Doba platnosti v dňoch</th>
+                    <th align="center">Zlodej</th>
+                    <th align="center">Druh zločinu</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for povolenie in dostal %}
+                    {% if user.is_superuser %}
+                        <h1></h1>
+                        <tr>
+                            <td align="center">
+                                {{ povolenie.id_povolenia.nazov_rajonu }}
+                            </td>
+                            <td align="center">
+                                {{ povolenie.id_povolenia.doba_platnosti }}
+                            </td align="center">
+                            <td align="center">{{ povolenie.prezivka }}</td>
+                            <td align="center">{{ povolenie.id_povolenia.id_zlocinu.id_typu_zlocinu.druh }}</td>
+                        </tr>
+                    {% else %}
+                        {% if povolenie.prezivka == user.prezivka %}
+                            <h1></h1>
+                            <tr>
+                                <td align="center">
+                                    {{ povolenie.id_povolenia.nazov_rajonu }}
+
+                                </td>
+                                <td align="center">
+                                    {{ povolenie.id_povolenia.doba_platnosti }}
+
+                                </td>
+                                <td align="center">{{ povolenie.prezivka }}</td>
+                                <td align="center">{{ povolenie.id_povolenia.id_zlocinu.id_typu_zlocinu.druh }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+                </tbody>
+        </div>
+
+{% endblock %}

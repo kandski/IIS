@@ -1,7 +1,8 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Priradiť zločin{% endblock %}
+{% block title %}Pridať zločin{% endblock %}
 {% block albums_active %}active{% endblock %}
 {% load widget_tweaks %}
+{% load i18n %}
 {% block body %}
     <div class="container-fluid">
 
@@ -10,9 +11,13 @@
             <div class="col-sm-12 col-md-7">
                 <div class="panel-body">
 
-                    <form class="form-horizontal" action="" method="post"
-                          enctype="multipart/form-data">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form_zlocin" novalidate>
                         {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
                         {% for field in form.visible_fields %}
                             <div class="form-group">
                                 {{ field.label_tag }}
@@ -40,14 +45,42 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success">
+                                    Potvrdiť
+                                </button>
                             </div>
                         </div>
-
+                        <div class="">
+                            <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'zlodej:vybavenie-add' %}'">
+                                Vytvoriť nové vybavenie
+                            </button>
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        $(function () {
+            $("#id_od").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 2,
+                onClose: function (selectedDate) {
+                    $("#id_od").datepicker("option", "minDate", selectedDate);
+                }
+            });
+        });
+        $(function () {
+            $("#id_do").datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 2,
+                onClose: function (selectedDate) {
+                    $("#id_do").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        });
+    </script>
 {% endblock %}

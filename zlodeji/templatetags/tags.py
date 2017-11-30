@@ -31,4 +31,13 @@ def count_vybavenie(arg):
     tmp = Vlastnil.objects.filter(prezivka=arg)
     return tmp.count()
 
-register.filter('count_vybavenie', count_vybavenie)
+register.filter('count_vybavenie', count_vybavenie)\
+
+@register.filter
+@register.inclusion_tag('zlodeji/templates/zlodeji/stat.html')
+@stringfilter
+def count_povolenia(arg):
+    tmp = Dostal.objects.filter(prezivka=arg)
+    return tmp.count()
+
+register.filter('count_povolenia', count_povolenia)

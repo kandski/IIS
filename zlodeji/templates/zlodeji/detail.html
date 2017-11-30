@@ -1,275 +1,77 @@
 {% extends 'zlodeji/base.html' %}
 
 {% block title %}Zlocin details{% endblock %}
+{% load static %}
+
 {% block body %}
-    <!--- Prihlasovanie na zlociny / skolenia ktoré správca musí schváliť--->
-    {% load static %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
 
-    <hr>
-    <div class="container bootstrap snippet">
-        <div class="row">
-            <div class="col-sm-10"><h1>Nome Cognome</h1></div>
-            <div class="col-sm-2"><a href="/users" class="pull-right"><img title="profile image"
-                                                                           class="img-circle img-responsive"
-                                                                           src=""></a></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3"><!--left col-->
+                <h3>Zločiny</h3>
 
-                <ul class="list-group">
-                    <li class="list-group-item text-muted">Profilo</li>
-                    <li class="list-group-item text-right"><span
-                            class="pull-left"><strong>Nome</strong></span> Andrea
-                    </li>
-                    <li class="list-group-item text-right"><span
-                            class="pull-left"><strong>Email</strong></span> andrearossi.it
-                    </li>
-                    <li class="list-group-item text-right"><span
-                            class="pull-left"><strong>Telefono</strong></span> +391236669992
-                    </li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Ultimo accesso</strong></span>
-                        23/07/2016
-                    </li>
+                {% if error_message %}
+                    <p>
+                        <strong>{{ error_message }}</strong>
+                    </p>
+                {% endif %}
+                <div class="col-sm-2">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for zlocin in urobil %}
+                            <li {% if forloop.first %} class="active" {% endif %}>
+                                <a data-toggle="pill"
+                                   href="#vybavenie{{ zlocin.id }}">{{ zlocin.id_zlocinu }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-                </ul>
-                <ul class="list-group">
-                    <li class="list-group-item text-right"><span
-                            class="pull-left"><strong>Allergie</strong></span>
-                        <button>edit</button>
-                        <div class="expandable form-group text-center"
-                             style="margin-top:30px; width:100%" data-count="1">
-                            <div class="row">
-                                <input name="name[]" type="text" id="name[]" placeholder="Allergia">
-                                <button class="btn add-more" id="add-more" type="button">+</button>
-                            </div>
-                        </div>
-                    </li>
+                <div class="col-sm-10">
+                    <div class="tab-content">
+                        {% for zlocin in urobil %}
+                            <div id="vybavenie{{ zlocin.id }}" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <div class="panel panel-default panel-table">
+                                            <div class="panel-heading">
+                                                <div class="row">
+                                                    <div class="col col-xs-6">
+                                                        <h1 class="panel-title">{{ zlocin.id_zlocinu }}</h1>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="col-sm-offset-1">
+                                                    <h2>Meno zlodeja: {{ zlocin.prezivka }}</h2>
+                                                    <h2>Typ zločinu: {{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}</h2>
+                                                    {% if dostal %}
+                                                        {% for zlo in dostal %}
+                                                            <h1>{{ zlo }}</h1>
+                                                            {% if zlo.id_povolenia.id_zlocinu == zlocin %}
+                                                                <h2>Názov rájónu: {{ zlo.id_povolenia.nazov_rajonu.nazov }}</h2>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <h3>Žiadne povolenie na tento zločin</h3>
+                                                    {% endif %}
+                                                    {% if eviduje %}
+                                                        {% for rajon in eviduje %}
+
+                                                        {% endfor %}
+                                                    {% endif %}
 
 
-                </ul>
-
-
-            </div><!--/col-3-->
-            <div class="col-sm-9">
-
-                <ul class="nav nav-tabs" id="myTab">
-                    <li class="active"><a href="#home" data-toggle="tab">Ultimo Trattamento</a></li>
-                    <li><a href="#messages" data-toggle="tab">Cronologia Appuntamenti</a></li>
-                    <li><a href="#settings" data-toggle="tab">Modifica utente</a></li>
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane active" id="home">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Trattamento</th>
-                                    <th>Prodotti utilizzati</th>
-                                    <th>Colori utilizzati</th>
-                                    <th>Note</th>
-                                    <th>Modifica</th>
-                                </tr>
-                                </thead>
-                                <tbody id="items">
-                                <tr data-toggle="collapse" data-target="#demo1"
-                                    class="accordion-toggle ">
-                                    <td>10.05.2017</td>
-                                    <td>MASSAGGIO schiena</td>
-                                    <td>usato loreal</td>
-                                    <td>colore rosso</td>
-                                    <td>il cliente preferisce il verde</td>
-                                    <td>
-                                        <button type="button" data-toggle="modal"
-                                                data-target="#edit" data-uid="1"
-                                                class="update btn btn-warning btn-sm"><span
-                                                class="glyphicon glyphicon-pencil"></span></button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-default btn-xs"><span
-                                                class="glyphicon glyphicon-eye-open"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="12" class="hiddenRow">
-                                        <div class="accordian-body collapse" id="demo1">
-                                            <table class="table table-striped">
-                                                <h1>Dettagli trattamento</h1>
-
-                                                <tbody>
-                                                <tr id='addr0'>
-                                                    <td>
-
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name='name0'
-                                                               placeholder='Name'
-                                                               class="form-control"/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name='mail0'
-                                                               placeholder='Mail'
-                                                               class="form-control"/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name='mobile0'
-                                                               placeholder='Mobile'
-                                                               class="form-control"/>
-                                                    </td>
-                                                </tr>
-                                                <tr id='addr1'></tr>
-                                                </tbody>
-
-                                            </table>
-                                            <a id="add_row" class="btn btn-default pull-left">Aggiungi
-                                                riga</a><a id='delete_row'
-                                                           class="pull-right btn btn-default">Elimina
-                                            riga</a>
-
+                                                </div>
+                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
-
-
-                                </tbody>
-
-                            </table>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-4 text-center">
-                                    <ul class="pagination" id="myPager"></ul>
-                                </div>
-                            </div>
-                        </div><!--/table-resp-->
-
-                        <div id="edit" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">×
-                                        </button>
-                                        <h4 class="modal-title">Modifica dati per (servizio)</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input id="fn" type="text" class="form-control" name="fname"
-                                               placeholder="Prodotti utilizzati">
-                                        <input id="ln" type="text" class="form-control" name="fname"
-                                               placeholder="Colori Utilizzati">
-                                        <input id="mn" type="text" class="form-control" name="fname"
-                                               placeholder="Note">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" id="up" class="btn btn-success"
-                                                data-dismiss="modal">Aggiorna
-                                        </button>
-                                        <button type="button" class="btn btn-danger"
-                                                data-dismiss="modal">Chiudi
-                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <hr>
-
-                    </div><!--/tab-pane-->
-                    <div class="tab-pane" id="messages">
-
-                        <h2></h2>
-
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Servizio</th>
-                                    <th>Modifica</th>
-                                </tr>
-                                </thead>
-                                <tbody id="items">
-                                <tr>
-                                    <td>10.05.2017</td>
-                                    <td>MASSAGGIO schiena</td>
-
-                                    <td>
-                                        <button type="button" data-toggle="modal"
-                                                data-target="#edit" data-uid="1"
-                                                class="update btn btn-warning btn-sm"><span
-                                                class="glyphicon glyphicon-pencil"></span></button>
-                                    </td>
-
-
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div><!--/tab-pane-->
-                    <div class="tab-pane" id="settings">
-
-
-                        <hr>
-                        <form class="form" action="##" method="post" id="registrationForm">
-                            <div class="form-group">
-
-                                <div class="col-xs-6">
-                                    <label for="first_name"><h4>Nome</h4></label>
-                                    <input type="text" class="form-control" name="first_name"
-                                           id="first_name" placeholder="nome"
-                                           title="Inserisci il nome">
-                                </div>
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-xs-6">
-                                    <label for="last_name"><h4>Cognome</h4></label>
-                                    <input type="text" class="form-control" name="last_name"
-                                           id="last_name" placeholder="Cognome"
-                                           title="Inserisci il cognome">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <label for="mobile"><h4>Telefono</h4></label>
-                                    <input type="text" class="form-control" name="mobile"
-                                           id="mobile" placeholder="inserisci il numero di telefono"
-                                           title="inserisci il numero di telefono">
-                                </div>
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-xs-6">
-                                    <label for="email"><h4>Email</h4></label>
-                                    <input type="email" class="form-control" name="email" id="email"
-                                           placeholder="tua@email.it" title="Inserisci l'email">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <br>
-                                    <button class="btn btn-lg btn-success" type="submit"><i
-                                            class="glyphicon glyphicon-ok-sign"></i> Salva
-                                    </button>
-                                    <button class="btn btn-lg" type="reset"><i
-                                            class="glyphicon glyphicon-repeat"></i> Ripristina
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        {% endfor %}
                     </div>
-
-                </div><!--/tab-pane-->
-            </div><!--/tab-content-->
-
-        </div><!--/col-9-->
-    </div><!--/row-->
-    <script src="{% static 'zlodeji/js/detail.js' %}"></script>
-
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

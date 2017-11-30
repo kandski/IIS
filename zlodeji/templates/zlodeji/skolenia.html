@@ -110,17 +110,11 @@
                                     <div class="col-sm-2">
                                         <ul class="nav nav-pills nav-stacked">
                                             {% for skolenie in sk_vybavenia %}
-                                                <li {% if forloop.first %} class="active" {% endif %}>
+                                                <li>
                                                     <a data-toggle="pill"
                                                        href="#vybavenie{{ skolenie.id_skolenia.id }}">{{ skolenie.id_skolenia.id }}</a>
                                                 </li>
                                             {% endfor %}
-                                            <!--<li class="active"><a data-toggle="pill" href="#home">Home</a>
-                                            </li>
-
-                                            <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
-                                            <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
-                                            <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>-->
                                         </ul>
                                     </div>
 
@@ -136,11 +130,6 @@
                                                                         <div class="col col-xs-6">
                                                                             <h3 class="panel-title">
                                                                                 {{ skolenie.id_skolenia }}</h3>
-                                                                        </div>
-                                                                        <div class="col col-xs-6 text-right">
-                                                                            <button type="button" class="btn btn-sm btn-primary btn-create">
-                                                                                Create New
-                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -233,18 +222,11 @@
                                     <div class="col-sm-2">
                                         <ul class="nav nav-pills nav-stacked">
                                             {% for skolenie in sk_zlocinu %}
-                                                <li {% if forloop.first %}
-                                                    class="active" {% endif %}>
+                                                <li>
                                                     <a data-toggle="pill"
                                                        href="#vybaveniez{{ skolenie.id_skolenia.id }}">{{ skolenie.id_skolenia.id }}</a>
                                                 </li>
                                             {% endfor %}
-                                            <!--<li class="active"><a data-toggle="pill" href="#home">Home</a>
-                                            </li>
-
-                                            <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
-                                            <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
-                                            <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>-->
                                         </ul>
                                     </div>
 
@@ -263,12 +245,6 @@
                                                                         <div class="col col-xs-6">
                                                                             <h3 class="panel-title">
                                                                                 {{ skolenie.id_skolenia }}</h3>
-                                                                        </div>
-                                                                        <div class="col col-xs-6 text-right">
-                                                                            <button type="button"
-                                                                                    class="btn btn-sm btn-primary btn-create">
-                                                                                Create New
-                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>

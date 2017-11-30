@@ -1,9 +1,25 @@
-{% for field in form %}
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <span class="text-danger small">{{ field.errors }}</span>
-        </div>
-        <label class="control-label col-sm-2">{{ field.label_tag }}</label>
-        <div class="col-sm-4">{{ field }}</div>
-    </div>
+{% load widget_tweaks %}
+{% for field in form.visible_fields %}
+  <div class="form-group">
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+      {% if field.errors %}
+        {% render_field field class="form-control is-invalid" %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% render_field field class="form-control is-valid" %}
+      {% endif %}
+    {% else %}
+      {% render_field field class="form-control" %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+  </div>
 {% endfor %}

@@ -1,36 +1,56 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Priradiť zločin{% endblock %}
+{% block title %}Pridať zločin{% endblock %}
 {% block albums_active %}active{% endblock %}
+{% load widget_tweaks %}
 
 {% block body %}
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
 
             <div class="col-sm-12 col-md-7">
                 <div class="panel-body">
 
-                    <form class="form-horizontal" action="" method="post"
-                          enctype="multipart/form-data">
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form_zlocin">
                         {% csrf_token %}
-                        {% for field in form %}
+                        {% for field in form.visible_fields %}
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <span class="text-danger small">{{ field.errors }}</span>
-                                </div>
-                                <label class="control-label col-sm-2">{{ field.label_tag }}</label>
-                                <div class="col-sm-4">{{ field }}</div>
+                                {{ field.label_tag }}
 
+                                {% if form.is_bound %}
+                                    {% if field.errors %}
+                                        {% render_field field class="form-control is-invalid" %}
+                                        {% for error in field.errors %}
+                                            <div class="invalid-feedback">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% render_field field class="form-control is-valid" %}
+                                    {% endif %}
+                                {% else %}
+                                    {% render_field field class="form-control" %}
+                                {% endif %}
+
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
                             </div>
                         {% endfor %}
+
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success">
+                                    Potvrdiť
+                                </button>
                             </div>
                         </div>
-
+                        <div class="">
+                            <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'zlodej:zlocin-add' %}'">
+                                Vytvoriť nový zločin
+                            </button>
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>

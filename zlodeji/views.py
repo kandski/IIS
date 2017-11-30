@@ -5,6 +5,8 @@ from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Count
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 from .forms import *
 from .models import *
@@ -37,7 +39,7 @@ class ZlodejsView(generic.ListView):
         return Zlodej.objects.all()
 
 
-class DetailView(generic.DetailView):
+class DetailView(generic.ListView):
     model = Zlocin
     template_name = 'zlodeji/detail.html'
     queryset = Zlocin.objects.all()
@@ -46,13 +48,15 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['urobil'] = Urobil.objects.all()
-        context['test'] = Zlocin.objects.all()
+        context['bolna'] = BolNa.objects.all()
+        context['dostal'] = Dostal.objects.all()
         return context
 
 
 class ZlodejCreate(LoginRequiredMixin, CreateView):
     model = Zlodej
     fields = ['prezivka', 'meno', 'rc', 'zivy', 'odmena', 'fotka']
+
 
 
 class ZlodejUpdate(LoginRequiredMixin, UpdateView):
@@ -68,7 +72,6 @@ class ZlodejDelete(LoginRequiredMixin, DeleteView):
 class ZlocinCreate(LoginRequiredMixin, CreateView):
     model = Zlocin
     fields = ['hodnota_korist', 'uspech', 'id_typu_zlocinu']
-
 
 class SkolenieCreate(LoginRequiredMixin, CreateView):
     model = Skolenie
@@ -117,6 +120,14 @@ class UrobilCreate(LoginRequiredMixin, CreateView):
 class UrobilUpdate(LoginRequiredMixin, UpdateView):
     model = Urobil
     fields = ['id_zlocinu', 'prezivka']
+
+class VlastnilCreate(LoginRequiredMixin, CreateView):
+    form_class = VlastnilForm
+    template_name = 'zlodeji/vlastnil_form.html'
+
+class VlastnilUpdate(LoginRequiredMixin, UpdateView):
+    form_class = VlastnilForm
+    template_name = 'zlodeji/vlastnil_form.html'
 
 class Skolenia(generic.ListView):
     template_name = 'zlodeji/skolenia.html'
@@ -181,9 +192,10 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class LogInView(View):
+class LogInView(SuccessMessageMixin, View):
     form_class = LoginForm
     template_name = 'zlodeji/login_form.html'
+    success_message = 'Vitaj späť %(username)!'
 
     # display form
     def get(self, request):
@@ -210,13 +222,27 @@ class LogOutView(LoginRequiredMixin, View):
     # process form data
     def get(self, request):
         logout(request)
+        messages.success(request, u"Odhlásenie prebehlo úspešne!")
         return redirect('zlodej:index')
+
 
 
 class SkolenieApprove(LoginRequiredMixin, UpdateView):
     model = Skolenie
     fields = ['schvalene']
     success_url = reverse_lazy('zlodej:skolenia')
+
+
+class User_Super(LoginRequiredMixin, UpdateView):
+    model = Zlodej
+    fields = ['is_superuser', 'is_staff']
+    success_url = reverse_lazy('zlodej:index')
+
+
+class User_Staff(LoginRequiredMixin, UpdateView):
+    model = Zlodej
+    fields = ['is_staff']
+    success_url = reverse_lazy('zlodej:index')
 
 
 
@@ -233,10 +259,12 @@ class Statistics(generic.ListView):
         context['zlocin_count'] = Urobil.objects.count()
         context['skolenie_count'] = BolNa.objects.count()
         context['vybavenie_count'] = Vlastnil.objects.count()
+        context['povolenia_count'] = Dostal.objects.count()
         context['urobil'] = Urobil.objects.all()
         context['urobil_unique'] = Urobil.objects.values('prezivka').distinct()
         context['bolna_unique'] = BolNa.objects.values('prezivka').distinct()
         context['vlastnil_unique'] = Vlastnil.objects.values('prezivka').distinct()
+        context['dostal_unique'] = Dostal.objects.values('prezivka').distinct()
         context['all_zlocin'] = Zlocin.objects.all()
         context['dostal'] = Dostal.objects.all()
         context['eviduje'] = Eviduje.objects.all()
@@ -267,3 +295,38 @@ class VybavenieView(generic.ListView):
         context['bolna'] = BolNa.objects.all()
         context['typ_vybavenia'] = TypVybavenia.objects.all()
         return context
+
+class Povolenia(generic.ListView):
+    template_name = 'zlodeji/povolenia.html'
+
+    def get_queryset(self):
+        return Dostal.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(Povolenia, self).get_context_data(**kwargs)
+        context['all_zlodejs'] = Zlodej.objects.all()
+        context['zlodej_count'] = Zlodej.objects.count()
+        context['zlocin_count'] = Urobil.objects.count()
+        context['skolenie_count'] = BolNa.objects.count()
+        context['vybavenie_count'] = Vlastnil.objects.count()
+        context['urobil'] = Urobil.objects.all()
+        context['urobil_unique'] = Urobil.objects.values('prezivka').distinct()
+        context['bolna_unique'] = BolNa.objects.values('prezivka').distinct()
+        context['vlastnil_unique'] = Vlastnil.objects.values('prezivka').distinct()
+        context['dostal_unique'] = Dostal.objects.values('prezivka').distinct()
+        context['all_zlocin'] = Zlocin.objects.all()
+        context['vlastnil'] = Vlastnil.objects.all()
+        context['bolna'] = BolNa.objects.all()
+        context['dostal'] = Dostal.objects.all()
+        context['typ_vybavenia'] = TypVybavenia.objects.all()
+        return context
+
+
+class VybavenieAssign(CreateView):
+    model = Vlastnil
+    template_name = 'zlodeji/zlodej_form.html'
+    fields = ['prezivka', 'id_typu_vybavenia', 'od', 'do']
+
+
+class RajonCreate(LoginRequiredMixin, CreateView):
+    pass
