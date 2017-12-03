@@ -104,20 +104,33 @@
                             </div>
                         </div>
                         <div class="">
-                            <div class="well">
-                                <h2>TOP 10 zlodeji podľa zločinov</h2>
-                                <table>
-                                    <ul class="list-group">
-                                        {% for zlocin in bolna_unique %}
-                                            <li class="list-group-item">
-                                                {{ zlocin.prezivka }}
-                                                <span class="badge">
-                                                    {{ zlocin.prezivka|count_zlocins }}
+                            <div class="well wellwell">
+                                <h3>Najlepší zlodeji podľa počtu  zločinov</h3>
+                                <ul class="list-group">
+                                    {% sum_zlocinov as sumZ %}
+                                    {% for key, values in sumZ.items|dictsortreversed:1 %}
+                                        <li class="list-group-item">
+                                            {{ key }}
+                                                <span class="badge">{{ values }}
                                                 </span>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </table>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="well welldone">
+                                <h3>Najlepší zlodeji podľa koristi</h3>
+                                <ul class="list-group ">
+                                    {% sum_koristi as sumK %}
+                                    {% for key, values in sumK.items|dictsortreversed:1 %}
+                                        <li class="list-group-item">
+                                            {{ key }}
+                                                <span class="badge">{{ values }}
+                                                </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         </div>
                     </div>

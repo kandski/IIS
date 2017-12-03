@@ -7,71 +7,49 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
+                {% for rajon in eviduje %}
+                    {% ifequal uziv rajon %}
+                        <h2>Názov rajónu: {{ uziv.nazov_rajonu.nazov_rajonu }}</h2>
+                        <h3>Kapacita zlodejov: {{ uziv.nazov_rajonu.kapacita_zlodejov }}</h3>
+                        <h3>Level rajónu: {{ uziv.nazov_rajonu.level_rajonu }}</h3>
+                        <h3>Bohatstvo rajónu: {{ uziv.nazov_rajonu.bohatstvo }}ℌ</h3>
+                        <h3>Počet obyvateľov: {{ uziv.nazov_rajonu.pocet_obyvatelov }}</h3>
+                        <h4>Zemepisné súradnice: š.{{ uziv.nazov_rajonu.sirka }} - d.{{ uziv.nazov_rajonu.dlzka }}</h4>
 
-                <h3>Zločiny</h3>
+                    {% endifequal %}
+                {% endfor %}
 
-                {% if error_message %}
-                    <p>
-                        <strong>{{ error_message }}</strong>
-                    </p>
-                {% endif %}
-                <div class="col-sm-2">
-                    <ul class="nav nav-pills nav-stacked">
-                        {% for zlocin in urobil %}
-                            <li {% if forloop.first %} class="active" {% endif %}>
-                                <a data-toggle="pill"
-                                   href="#vybavenie{{ zlocin.id }}">{{ zlocin.id_zlocinu }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                <div class="well">
+                    <h3>Urádujúci zlodeji:</h3>
+                    {% for rajon in eviduje %}
+                        {% if rajon.nazov_rajonu == uziv.nazov_rajonu %}
+                            <p>{{ rajon.prezivka }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
-                <div class="col-sm-10">
-                    <div class="tab-content">
-                        {% for zlocin in urobil %}
-                            <div id="vybavenie{{ zlocin.id }}" class="tab-pane fade">
-                                <div class="row">
-                                    <div class="col-md-10 col-md-offset-1">
-                                        <div class="panel panel-default panel-table">
-                                            <div class="panel-heading">
-                                                <div class="row">
-                                                    <div class="col col-xs-6">
-                                                        <h1 class="panel-title">{{ zlocin.id_zlocinu }}</h1>
+                <div id="map" style="height: 300px;"></div>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel-body">
-                                                <div class="col-sm-offset-1">
-                                                    <h2>Meno zlodeja: {{ zlocin.prezivka }}</h2>
-                                                    <h2>Typ zločinu: {{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}</h2>
-                                                    {% if dostal %}
-                                                        {% for zlo in dostal %}
-                                                            <h1>{{ zlo }}</h1>
-                                                            {% if zlo.id_povolenia.id_zlocinu == zlocin %}
-                                                                <h2>Názov rájónu: {{ zlo.id_povolenia.nazov_rajonu.nazov }}</h2>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        <h3>Žiadne povolenie na tento zločin</h3>
-                                                    {% endif %}
-                                                    {% if eviduje %}
-                                                        {% for rajon in eviduje %}
-
-                                                        {% endfor %}
-                                                    {% endif %}
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    <script>
+        function initMap() {
+            var cent = {lat: {{ uziv.nazov_rajonu.sirka }}, lng: {{ uziv.nazov_rajonu.dlzka }}};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 9,
+                center: cent
+
+            });
+            var marker = new google.maps.Marker({
+                position: cent,
+                map: map
+            });
+        }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp-IA0zGU_k7pTrglMRBMVfIH3wSvSooc&callback=initMap"
+            async defer></script>
+
 {% endblock %}
+

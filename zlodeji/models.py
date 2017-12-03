@@ -12,12 +12,12 @@ class Zlodej(AbstractUser):
     odmena = models.IntegerField()
     fotka = models.CharField(max_length=300)
 
-
     def get_absolute_url(self):
-        return reverse('zlodej:detail', kwargs={'pk': self.pk})
+        return reverse('zlodej:index')
 
     def __str__(self):
         return self.prezivka
+
 
 class Skolenie(models.Model):
     level_skoleni = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
@@ -44,6 +44,9 @@ class Rajon(models.Model):
 
     def __str__(self):
         return self.nazov_rajonu
+
+    def get_absolute_url(self):
+        return reverse('zlodej:index')
 
 
 class Vydriduch(models.Model):
@@ -116,6 +119,7 @@ class Vybavenie(models.Model):
     def get_absolute_url(self):
         return reverse('zlodej:vlastnil-add')
 
+
 class Vlastnil(models.Model):
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
     id_vybavenia = models.ForeignKey(Vybavenie, on_delete=models.CASCADE)
@@ -134,7 +138,7 @@ class Urobil(models.Model):
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('zlodej:detail')
+        return reverse('zlodej:index')
 
 
 class BolNa(models.Model):
@@ -142,14 +146,18 @@ class BolNa(models.Model):
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('zlodej:index')
+        return reverse('zlodej:bolna-add')
+
 
 class Eviduje(models.Model):
     prezivka = models.ForeignKey(Zlodej, on_delete=models.CASCADE)
     nazov_rajonu = models.ForeignKey(Rajon, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('zlodej:eviduje-add')
+
     def __str__(self):
-        return self.prezivka.prezivka
+        return self.nazov_rajonu.nazov_rajonu + '-' + self.prezivka.prezivka
 
 
 class Dostal(models.Model):
@@ -161,14 +169,19 @@ class SkolenieVybavenia(models.Model):
     id_skolenia = models.ForeignKey(Skolenie, on_delete=models.CASCADE)
     id_typu_vybavenia = models.ForeignKey(TypVybavenia, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('zlodej:skolenia')
+
     def __str__(self):
         return 'Skolenie' + self.id_skolenia.id.__str__() + '-' + self.id_typu_vybavenia.nazov
+
 
 class SkolenieZlocinu(models.Model):
     id_skolenia = models.ForeignKey(Skolenie, on_delete=models.CASCADE)
     id_typu_zlocinu = models.ForeignKey(TypZlocinu, on_delete=models.CASCADE)
 
-
     def __str__(self):
         return 'Skolenie' + self.id_skolenia.id.__str__() + '-' + self.id_typu_zlocinu.druh
 
+    def get_absolute_url(self):
+        return reverse('zlodej:skolenia')

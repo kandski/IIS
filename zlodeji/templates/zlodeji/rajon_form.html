@@ -1,0 +1,55 @@
+{% extends 'zlodeji/base.html' %}
+{% block title %}Vytvoriť rajon{% endblock %}
+{% block albums_active %}active{% endblock %}
+{% load widget_tweaks %}
+{% block body %}
+    {% if user.is_superuser %}
+        <div class="container-fluid">
+
+            <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" action="" method="post"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in form.visible_fields %}
+                                <div class="form-group">
+                                    {{ field.label_tag }}
+
+                                    {% if form.is_bound %}
+                                        {% if field.errors %}
+                                            {% render_field field class="form-control is-invalid" %}
+                                            {% for error in field.errors %}
+                                                <div class="invalid-feedback" style="color: red;">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% render_field field class="form-control is-valid" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field field class="form-control" %}
+                                    {% endif %}
+
+                                    {% if field.help_text %}
+                                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-10">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

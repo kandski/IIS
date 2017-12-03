@@ -3,3 +3,4 @@ django == 2.0b1
 psycopg2
 mysqlclient
 django-widget-tweaks
+django-debug-toolbar

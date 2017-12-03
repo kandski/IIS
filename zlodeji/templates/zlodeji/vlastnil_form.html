@@ -26,7 +26,7 @@
                                     {% if field.errors %}
                                         {% render_field field class="form-control is-invalid" %}
                                         {% for error in field.errors %}
-                                            <div class="invalid-feedback">
+                                            <div class="invalid-feedback" style="color: red;">
                                                 {{ error }}
                                             </div>
                                         {% endfor %}
@@ -62,9 +62,21 @@
     </div>
     <script>
         $(function () {
+            $.datepicker.regional['cz'] = {
+                closeText: 'Zavřít', // set a close button text
+                currentText: 'Dnes', // set today text
+                monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'], // set month names
+                monthNamesShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'], // set short month names
+                dayNames: ['Neděle', 'Pondělí', 'Úterí', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'], // set days names
+                dayNamesShort: ['Ned','Pon', 'Ute', 'Str', 'Čtv', 'Pát', 'Sob'], // set short day names
+                dayNamesMin: [ 'Ne', 'Po','Ut', 'St', 'Čt', 'Pá', 'So'] // set more short days names
+            };
+
+            $.datepicker.setDefaults($.datepicker.regional['cz']);
             $("#id_od").datepicker({
-                dateFormat: "yy-mm-dd",
+                dateFormat: "DD, d MM, yy",
                 changeMonth: true,
+                firstDay: 1,
                 numberOfMonths: 2,
                 onClose: function (selectedDate) {
                     $("#id_od").datepicker("option", "minDate", selectedDate);
@@ -73,7 +85,7 @@
         });
         $(function () {
             $("#id_do").datepicker({
-                dateFormat: "yy-mm-dd",
+                dateFormat: "DD, d MM, yy",
                 defaultDate: "+1w",
                 changeMonth: true,
                 numberOfMonths: 2,

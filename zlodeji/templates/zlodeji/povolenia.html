@@ -5,12 +5,14 @@
 
     <div class="page-header center">
         <h1 style="padding-left: 40%;">Povolenia</h1>
-        <p style="padding-left: 35%;">Zoznam aktuálne dostupných povolení na vykonanie zločinu</p>
+        <p style="padding-left: 35%;">Zoznam aktuálne dostupných povolení na vykonanie zločinu.</p>
     </div>
 
     <div class="container">
+
         <div class="panel-body">
-            <table class="table table-striped table-bordered table-list">
+            {% if dostal %}
+                <table class="table table-striped table-bordered table-list">
                 <thead>
                 <tr>
                     <th align="center">
@@ -31,7 +33,7 @@
                             </td>
                             <td align="center">
                                 {{ povolenie.id_povolenia.doba_platnosti }}
-                            </td align="center">
+                            </td>
                             <td align="center">{{ povolenie.prezivka }}</td>
                             <td align="center">{{ povolenie.id_povolenia.id_zlocinu.id_typu_zlocinu.druh }}</td>
                         </tr>
@@ -55,6 +57,10 @@
 
                 {% endfor %}
                 </tbody>
+            {% else %}
+                <h3> Nemáte žiadne dostupné povolenia na zločin. Kontaktujte svojho úradníka.</h3>
+            {% endif %}
+
         </div>
 
 {% endblock %}

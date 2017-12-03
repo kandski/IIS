@@ -46,9 +46,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'zlodeji/style.css' %}">
 
@@ -134,7 +134,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
+                {% if user.is_staff %}
                     <!---{#
                     #}-->
                     <li class="dropdown">
@@ -167,6 +167,9 @@
                         </ul>
 
                     </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+
                     <li class="">
                         <a href="{% url 'zlodej:logout' %}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;
@@ -186,27 +189,55 @@
         </div>
     </div>
 </nav>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissable fade in"
+             style="position: relative; z-index: 2;">
+            <a href="#" class="close" data-dismiss="alert"
+               aria-label="close">&times;</a>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 {% block body %}
 {% endblock %}
-<script>
+{% if user.is_authenticated %}
+    <script>
 
-    function addzlocin() {
-        window.open("{% url 'zlodej:urobil-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
-    }
+        function addzlocin() {
+            window.open("{% url 'zlodej:urobil-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
 
-    function assignzlocin() {
-        window.open("{% url 'zlodej:urobil-add' %}", "Priradiť zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
-    }
+        function editzlodej() {
+            window.open("{% url 'zlodej:zlodej-update' user.username %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
 
-    function addvybavenie() {
-        window.open("{% url 'zlodej:vlastnil-add' %}", "Pridať vybavenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
-    }
+        function assignzlocin() {
+            window.open("{% url 'zlodej:urobil-add' %}", "Priradiť zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
 
-    function addskolenie() {
-        window.open("{% url 'zlodej:skolenie-add' %}", "Pridať školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
-    }
+        function addvybavenie() {
+            window.open("{% url 'zlodej:vlastnil-add' %}", "Pridať vybavenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
 
-</script>
+        function addskolenie() {
+            window.open("{% url 'zlodej:skolenie-add' %}", "Pridať školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+        }
+
+        function addeviduje() {
+            window.open("{% url 'zlodej:eviduje-assign' %}", "Evidovať rajon", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+        }
+
+        function prihlasenie() {
+            window.open("{% url 'zlodej:bolna-add' %}", "Prihlasiť na školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+        }
+        function reload_parent() {
+            window.location.reload()
+            window.parent.opener.reload();
+        }
+
+    </script>
+{% endif %}
 <div class="footer">
     ©Copyright: Rastislav Kanda - Jakub Klemens (xkanda00 - xkleme11)
 </div>

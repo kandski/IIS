@@ -1,5 +1,5 @@
 body {
-
+    background-color: rgba(84, 87, 110, 0.1);
 }
 
 .content:before {
@@ -47,7 +47,7 @@ input[type=text], input[type=password] {
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid #2ecc23;
     box-sizing: border-box;
 }
 
@@ -84,7 +84,7 @@ input[type=text], input[type=password] {
 /* The Modal (background) */
 .modal {
     display: table; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: absolute; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
@@ -93,7 +93,7 @@ input[type=text], input[type=password] {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-    padding-top: 60px;
+    padding-top: 0px;
 }
 
 /* Modal Content/Box */
@@ -113,6 +113,19 @@ input[type=text], input[type=password] {
     color: #000;
     font-size: 40px;
     font-weight: bold;
+}
+
+div.well.welldone {
+    border-color: #3e7fb4;
+    border-radius: 19px;
+    border-width: 3px;
+}
+
+div.well.wellwell {
+    border-color: #2ab6b0;
+    border-radius: 19px;
+    border-width: 3px;
+
 }
 
 .close:hover,
@@ -454,7 +467,7 @@ used to vertically center elements, may need modification if you're not using de
     display: table-cell;
     height: 280px;
     width: 20%;
-    min-width: 320px;
+    min-width: 50px;
     float: none !important;
     padding-left: 0px;
     padding-right: 20px;
@@ -518,11 +531,11 @@ a.skiplink:focus {
 }
 
 .footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   background-color: #3b7eb6;
-   color: white;
-   text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #3b7eb6;
+    color: white;
+    text-align: center;
 }

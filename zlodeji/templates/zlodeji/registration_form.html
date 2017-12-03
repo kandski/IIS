@@ -4,7 +4,7 @@
 {% load widget_tweaks %}
 {% block body %}
 
-    <div id="id01" class="modal" style="text-align: center; margin: 0 auto;">
+    <div id="id01" class="modal" style="text-align: center; margin: 0 auto; ">
         <span id="xclose" onclick="document.getElementById('id01').style.display='none'"
               class="login close">×</span>
         <form class="form-horizontal container modal-content" action="" method="post"
@@ -18,7 +18,7 @@
                         {% if field.errors %}
                             {% render_field field class="form-control is-invalid" %}
                             {% for error in field.errors %}
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback" style="color: red;">
                                     {{ error }}
                                 </div>
                             {% endfor %}

@@ -1,67 +1,387 @@
 {% extends 'zlodeji/base.html' %}
-{% block albums_active %}active{% endblock %}
-
+{% load static %}
+{% block title %}Zlodej{% endblock %}
+{% block collapsible %}
+    {% if user.is_superuser %}
+        <li>
+            <a data-toggle="collapse" data-target="#demo">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                Zobraziť všetkých registrovaných zlodejov
+            </a>
+        </li>
+    {% endif %}
+{% load tags %}
+{% endblock %}
 {% block body %}
-    <div class="albums-container container-fluid content">
 
-        {% if user.is_authenticated %}
+    <div class="container-fluid songs-container">
+        {% for zlodej in all_zlodejs %}
+            {% if user.is_authenticated %}
+                {% if user.username == zlodej.username %}
+                    {% if user.is_superuser %}
+                        <div id="demo" class="collapse row">
 
-            <!-- Albums -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3>Uživateľ <strong>{{ user.username }} </strong> Zlocins</h3>
-                    {% for zlodej in all_zlodejs %}
-                        {% if zlodej.prezivka == user.username %}
-                            <h2>Prezívka: {{ zlodej.prezivka }}</h2>
-                            <h2>Meno: {{ zlodej.meno }}</h2>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                {% for zlocin in urobil %}
-                    {% if zlocin.prezivka_id == user.username %}
+                            {% for zlodej in all_zlodejs %}
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <h3>{{ zlodej.username }}
+                                                <small></small>
+                                            </h3>
+                                            {% if zlodej.meno %}
+                                                <h4>Meno: {{ zlodej.meno }}</h4>
+                                            {% else %}
+                                                <h4>Meno: ---------</h4>
+                                            {% endif %}
+                                            <h5>Odmena: {{ zlodej.odmena }}</h5>
+                                            <h5>Rodné číslo: {{ zlodej.rc }}</h5>
 
-                        <div class="col-sm-4 col-lg-2">
-                            <div class="thumbnail">
-                                <div class="caption">
+                                            {% if zlodej.is_superuser %}
+                                                <form action="{% url 'zlodej:superuser' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_superuser"
+                                                           value="False"/>
+                                                    <button type="submit" class="btn btn-danger btn-xs">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        Superuser
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <form action="{% url 'zlodej:superuser' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_superuser"
+                                                           value="True"/>
+                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        Superuser
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+
+                                            {% if zlodej.is_staff %}
+                                                <form id="staffik" action="{% url 'zlodej:staff' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_staff"
+                                                           value="False"/>
+                                                    <button type="submit" class="btn btn-danger btn-xs">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        Staff
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <form id="staffik" action="{% url 'zlodej:staff' zlodej %}"
+                                                      method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="is_staff"
+                                                           value="True"/>
+                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                        Staff
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            <button class="btn btn-primary btn-xs" onclick="window.open('{% url 'zlodej:zlodej-update' zlodej %}', 'Pridať zločin',
+                                                    'toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600');">
+                                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                                                Upraviť profil
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
 
-                                    <h4>{{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}</h4>
-                                    <h4>{% for object in eviduje %}
-                                        {% if object.prezivka_id == user.username %}
-                                            {{ object.nazov_rajonu }}
+                    <div class="row">
+                        <!-- Left Album Info -->
+                        <div class="col-sm-4 col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <a href="">
+                                        {% if zlodej.fotka %}
+                                            <img src="{{ zlodej.fotka }}" class="img-responsive">
+                                        {% else %}
+                                            <h3>No image to display</h3>
                                         {% endif %}
-                                    {% endfor %}
-                                    </h4>
-
-
-                                    <!-- View Details -->
-                                    <a href="{% url 'zlodej:zlocin-detail' zlocin.id_zlocinu %}"
-                                       class="btn btn-primary btn-sm" role="button">View Details</a>
-
-
-                                    <!-- Delete Album -->
-                                    <form action=""
-                                          method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="zlodej_prezivka"
-                                               value="{{ zlodej.prezivka }}"/>
-                                        <button type="submit" class="btn btn-default btn-sm">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </button>
-                                    </form>
-
-
+                                    </a>
+                                    <h1>{{ zlodej.username }}
+                                        <small></small>
+                                    </h1>
+                                    {% if zlodej.meno %}
+                                        <h3>Meno: {{ zlodej.meno }}</h3>
+                                    {% else %}
+                                        <h3>Meno: ---------</h3>
+                                    {% endif %}
+                                    <h3>Odmena: {{ zlodej.odmena }}</h3>
+                                    <h3>Rodné číslo: {{ zlodej.rc }}</h3>
                                 </div>
                             </div>
                         </div>
-                        {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% else %}
-            <script>
-                window.location.href =
-                {% url 'zlodej:login' %}
-            </script>
-        {% endif %}
+
+                        <!-- Right Song Info -->
+                        <div class="col-sm-8 col-md-9">
+                            <div class="panel with-nav-tabs panel-default">
+                                <div class="panel-heading">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#tab1default" data-toggle="tab">
+                                                Zločiny
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab2default" data-toggle="tab">
+                                                Školenia
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab3default" data-toggle="tab">
+                                                Rajóny
+                                            </a>
+                                        </li>
+                                        <li role="presentation"><a onclick="addeviduje()">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                            Evidovať rajón
+                                        </a></li>
+                                        <li role="presentation"><a href="">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                            Evidovať vybavenie
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active"
+                                             id="tab1default">
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+
+                                                    <h3>Zločiny</h3>
+
+                                                    {% if error_message %}
+                                                        <p>
+                                                            <strong>{{ error_message }}</strong>
+                                                        </p>
+                                                    {% endif %}
+
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Typ zločinu</th>
+                                                            <th>Úspech</th>
+                                                            <th>Získaná korisť</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for zlocin in urobil %}
+                                                            {% if zlocin.prezivka_id == user.username %}
+
+                                                                <tr>
+                                                                    <td>
+                                                                        {{ zlocin.id_zlocinu.id_typu_zlocinu.druh }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if not zlocin.id_zlocinu.uspech %}
+                                                                            <span class="glyphicon glyphicon-remove"
+                                                                                  aria-hidden="true"></span>
+                                                                        {% else %}
+                                                                            <span class="glyphicon glyphicon-ok"
+                                                                                  aria-hidden="true"></span>
+                                                                        {% endif %}
+                                                                    </td>
+
+                                                                    <td>
+                                                                        {{ zlocin.id_zlocinu.hodnota_korist }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <form action="{% url 'zlodej:urobil-delete' zlocin.id %}" method="post"
+                                                                              style="display: inline;">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="zlocin_id" value="{{ zlocin.id }}"/>
+                                                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                                                                Delete
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="well">
+                                                        Sučet koristí: <strong>{{ user|sum_korist }}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab2default">
+
+
+                                            <!------------------------------------------- SKOLENIA --------------------------------------------->
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+
+                                                    <h3>Školenia</h3>
+
+                                                    {% if error_message %}
+                                                        <p>
+                                                            <strong>{{ error_message }}</strong>
+                                                        </p>
+                                                    {% endif %}
+
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Typ školenia</th>
+                                                            <th>Level školenia</th>
+                                                            <th>Poznámky</th>
+                                                            <th>Schválená účasť</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for zlocin in bolna %}
+                                                            {% if zlocin.prezivka_id == user.username %}
+
+                                                                <tr>
+                                                                    <td>{{ zlocin.id_skolenia }}</td>
+                                                                    <td>
+                                                                        {{ zlocin.id_skolenia.level_skoleni }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ zlocin.id_skolenia.poznamky }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if not zlocin.id_skolenia.schvalene %}
+                                                                            <span class="glyphicon glyphicon-remove"
+                                                                                  aria-hidden="true"></span>
+                                                                        {% else %}
+                                                                            <span class="glyphicon glyphicon-ok"
+                                                                                  aria-hidden="true"></span>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                    <td>
+                                                                        {% if not zlocin.id_skolenia.schvalene %}
+                                                                            {% if zlodej.is_superuser %}
+                                                                                <form action="{% url 'zlodej:approve' zlocin.id_skolenia_id %}"
+                                                                                      method="post" style="display: inline;">
+                                                                                    {% csrf_token %}
+                                                                                    <input type="hidden" name="schvalene"
+                                                                                           value="1"/>
+                                                                                    <button type="submit" class="btn btn-success btn-xs">
+                                                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                                                        Schváliť
+                                                                                    </button>
+                                                                                </form>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="tab-pane fade" id="tab3default">
+
+
+                                            <!------------------------------------------- RAJONY --------------------------------------------->
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+
+                                                    <h3>Rajóny</h3>
+
+                                                    {% if error_message %}
+                                                        <p>
+                                                            <strong>{{ error_message }}</strong>
+                                                        </p>
+                                                    {% endif %}
+
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nazov rajonu</th>
+                                                            <th>Level</th>
+                                                            <th>Kapacita zlodejov</th>
+                                                            <th>Bohatstvo</th>
+                                                            <th>Počet obyvateľov</th>
+                                                            <th>Zemepisná dĺžka</th>
+                                                            <th>Zemepisná šírka</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for rajon in eviduje %}
+                                                            {% if rajon.prezivka_id == user.username %}
+
+                                                                <tr>
+                                                                    <td>{{ rajon.nazov_rajonu }}</td>
+                                                                    <td>
+                                                                        {{ rajon.nazov_rajonu.level_rajonu }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ rajon.nazov_rajonu.kapacita_zlodejov }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ rajon.nazov_rajonu.bohatstvo }}
+                                                                    </td>
+
+                                                                    <td>
+                                                                        {{ rajon.nazov_rajonu.pocet_obyvatelov }}
+                                                                    </td>
+                                                                    <td>{{ rajon.nazov_rajonu.dlzka }}</td>
+                                                                    <td>{{ rajon.nazov_rajonu.sirka }}</td>
+                                                                    <td>
+                                                                        <a href="{% url 'zlodej:rajon-detail' rajon.id %}">Detail</a>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="tab-pane fade" id="tab4default">Default
+                                            4
+                                        </div>
+                                        <div class="tab-pane fade" id="tab5default">Default
+                                            5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                            <!--<li role="presentation"  class="active"><a href="">View All</a></li>-->
+                        </ul>
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if forloop.first %}
+                    <!--<img src="{% static 'zlodeji/images/down-curved-arrow.png' %}" class="topright">
+                    --><img style="float:right; height: 100px; width: 100px; margin-right: 40px;"
+                            src="{% static 'zlodeji/images/down-curved-arrow.png' %}">
+                    <div style="position: center; text-align: center;">
+                        <h1>ISCZ - Vitajte v informačnom systéme Cechu zlodejov</h1>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
 {% endblock %}
