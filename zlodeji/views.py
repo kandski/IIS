@@ -1,7 +1,10 @@
+
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -37,14 +40,6 @@ class IndexView(generic.ListView):
         return context
 
 
-class ZlodejsView(generic.ListView):
-    template_name = 'zlodeji/zlodejs.html'
-    context_object_name = 'all_zlodejs'
-
-    def get_queryset(self):
-        return Zlodej.objects.all()
-
-
 class DetailView(generic.ListView):
     model = Zlocin
     template_name = 'zlodeji/detail.html'
@@ -72,15 +67,17 @@ class DetailView(generic.ListView):
 
 
 class ZlodejCreate(LoginRequiredMixin, CreateView):
+    template_name = 'zlodeji/registration_form.html'
     model = Zlodej
     fields = ['username','email', 'prezivka','meno', 'password', 'odmena',
                   'rc', 'fotka', 'zivy']
 
 
-class ZlodejUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'zlodeji/zlocin_form.html'
+class ZlodejUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    template_name = 'zlodeji/zlodej_form.html'
     model = Zlodej
     fields = ['email','meno', 'odmena', 'rc', 'fotka', 'zivy']
+    success_message = u"Uživateľ bol úspešne upravený."
 
 
 class ZlodejDelete(LoginRequiredMixin, DeleteView):
@@ -88,73 +85,90 @@ class ZlodejDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('zlodej:index')
 
 
-class ZlocinCreate(LoginRequiredMixin, CreateView):
+class ZlocinCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Zlocin
     fields = ['hodnota_korist', 'uspech', 'id_typu_zlocinu']
+    success_message = u"Záznam zločinu bol úspešne vytvorený."
 
 
-class SkolenieCreate(LoginRequiredMixin, CreateView):
+class SkolenieCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Skolenie
     fields = ['level_skoleni', 'schvalene', 'poznamky']
+    success_message = u"Záznam školenia bol úspešne vytvorený."
 
 
-class SkolenieUpdate(LoginRequiredMixin, UpdateView):
+class SkolenieUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Skolenie
     fields = ['level_skoleni', 'schvalene', 'poznamky']
+    success_message = u"Záznam školenia bol úspešne vytvorený."
 
 
-class VybavenieCreate(LoginRequiredMixin, CreateView):
+class VybavenieCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Vybavenie
     fields = ['meno', 'id_typu_vybavenia']
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class VybavenieUpdate(LoginRequiredMixin, UpdateView):
+class VybavenieUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Vybavenie
     fields = ['meno', 'id_typu_vybavenia']
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class ZlocinUpdate(LoginRequiredMixin, UpdateView):
+class ZlocinUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Zlocin
     fields = ['hodnota_korist', 'uspech', 'id_typu_zlocinu']
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class ZlocinDelete(LoginRequiredMixin, DeleteView):
+class ZlocinDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Zlocin
+    success_message = u"Záznam bol úspešne odstránený."
     success_url = reverse_lazy('zlodej:index')
 
-class UrobilDelete(LoginRequiredMixin, DeleteView):
+class UrobilDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = Urobil
+    success_message = u"Záznam bol úspešne odstránený."
     success_url = reverse_lazy('zlodej:index')
 
 
-class BolnaCreate(LoginRequiredMixin, CreateView):
+class BolnaCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = BolNa
     fields = ['id_skolenia', 'prezivka']
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class BolnaUpdate(LoginRequiredMixin, UpdateView):
+
+class BolnaUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = BolNa
     fields = ['id_skolenia', 'prezivka']
+    success_message = u"Záznam bol úspešne upravený."
 
 
-class UrobilCreate(LoginRequiredMixin, CreateView):
+class UrobilCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Urobil
     fields = ['id_zlocinu', 'prezivka']
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class UrobilUpdate(LoginRequiredMixin, UpdateView):
+
+class UrobilUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Urobil
     fields = ['id_zlocinu', 'prezivka']
+    success_message = u"Záznam bol úspešne upravený."
 
 
-class VlastnilCreate(LoginRequiredMixin, CreateView):
+class VlastnilCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     form_class = VlastnilForm
     template_name = 'zlodeji/vlastnil_form.html'
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class VlastnilUpdate(LoginRequiredMixin, UpdateView):
+class VlastnilUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     form_class = VlastnilForm
     template_name = 'zlodeji/vlastnil_form.html'
+    success_message = u"Záznam bol úspešne upravený."
+
 
 
 class Skolenia(generic.ListView):
@@ -192,7 +206,7 @@ class RegisterView(View):
 
     # display form
     def get(self, request):
-        form = self.form_class(None)
+        form = self.form_class(initial={'odmena': '0',})
         return render(request, self.template_name, {'form': form})
 
     # process form data
@@ -349,9 +363,12 @@ class Povolenia(generic.ListView):
         return context
 
 
-class RajonCreate(LoginRequiredMixin, CreateView):
+class RajonCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Rajon
     fields = ['nazov_rajonu', 'sirka', 'dlzka', 'pocet_obyvatelov', 'kapacita_zlodejov', 'bohatstvo', 'level_rajonu']
+    success_message = u"Záznam bol úspešne vytvorený."
+
+
 
 class RajonDetail(LoginRequiredMixin, generic.ListView):
     template_name = 'zlodeji/detail.html'
@@ -392,34 +409,106 @@ class EvidujeCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Eviduje
     fields = ['prezivka', 'nazov_rajonu']
     success_message = u"Záznam bol úspešne vytvorený."
+    #success_url = reverse_lazy('zlodej:eviduje-add')
 
 
-class EvidujeAssign(LoginRequiredMixin, CreateView):
-   form_class = EvidujeForm
-   template_name = 'zlodeji/rajon_assign.html'
+class EvidujeAssign(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    form_class = EvidujeForm
+    template_name = 'zlodeji/rajon_assign.html'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.request = None
+
+    def get_initial(self):
+        self.initial.update({'prezivka': self.request.user})
+        return self.initial
+    # success_url = reverse_lazy('zlodej:eviduje-assign')
 
 
-class BolNaCreate(LoginRequiredMixin, CreateView):
+class BolNaCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = BolNa
     fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
 
 
-class BolNaUpdate(LoginRequiredMixin, UpdateView):
+class BolNaUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = BolNa
     fields = '__all__'
+    success_message = u"Záznam bol úspešne upravený."
 
 
-class BolNaDelete(LoginRequiredMixin, DeleteView):
+class BolNaDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     model = BolNa
     fields = '__all__'
+    success_message = u"Záznam bol úspešne vymazaný."
+    success_url = reverse_lazy('zlodej:skolenia')
 
 
-class SkolenieZlocinuCreate(LoginRequiredMixin, CreateView):
-    template_name = 'zlodeji/vybavenie_form.html'
+class SkolenieZlocinuCreate(SuccessMessageMixin,LoginRequiredMixin, CreateView):
     model = SkolenieZlocinu
     fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
 
-class SkolenieVybaveniaCreate(LoginRequiredMixin, CreateView):
-    template_name = 'zlodeji/vybavenie_form.html'
+
+class SkolenieVybaveniaCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = SkolenieVybavenia
     fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+class DostalCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Dostal
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+class PovolenieCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Povolenie
+    fields = ['doba_platnosti', 'nazov_rajonu', 'id_zlocinu']
+    success_message = u"Záznam bol úspešne vytvorený."
+
+class VydriduchCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Vydriduch
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+
+class LupeznikCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Lupeznik
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+
+class DostalDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    model = Dostal
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vymazaný."
+    success_url = reverse_lazy('zlodej:povolenia')
+
+class EvidujeDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    model = Eviduje
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vymazaný."
+    success_url = reverse_lazy('zlodej:index')
+
+
+class VlastnilDelete(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    model = Vlastnil
+    fields = '__all__'
+    success_message = u"Záznam bol úspešne vymazaný."
+    success_url = reverse_lazy('zlodej:index')
+
+
+class VlastnilCreatezlodej(SuccessMessageMixin, CreateView):
+    form_class = VlastnilFormzlodej
+    template_name = 'zlodeji/vlastnil_form.html'
+    success_message = u"Záznam bol úspešne vytvorený."
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.request = None
+
+    def get_initial(self):
+        self.initial.update({'prezivka': self.request.user})
+        return self.initial
+    # success_url = reverse_lazy('zlodej:eviduje-assign')

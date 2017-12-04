@@ -3,11 +3,10 @@
 {% block albums_active %}active{% endblock %}
 {% load widget_tweaks %}
 {% block body %}
-    {% if user.is_superuser %}
         <div class="container-fluid">
 
             <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
-
+                <h3>Evidovať rajón</h3>
                 <div class="col-sm-12 col-md-7">
                     <div class="panel-body">
 
@@ -40,7 +39,7 @@
                                 </div>
                             {% endfor %}
                             <div class="form-group">
-                                <div class="col-sm-offset-3 col-sm-10">
+                                <div class="">
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>
@@ -51,5 +50,4 @@
                 </div>
             </div>
         </div>
-    {% endif %}
 {% endblock %}

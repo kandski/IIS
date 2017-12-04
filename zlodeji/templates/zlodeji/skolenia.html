@@ -150,16 +150,18 @@
                                                                     <table class="table table-striped table-bordered table-list">
                                                                         <thead>
                                                                         <tr>
-                                                                            <th class="hidden-xs">Level
-                                                                            </th>
+                                                                            <th>Typ vybavenie</th>
+                                                                            <th>Level</th>
                                                                             <th>Name</th>
                                                                             <th>Schválené</th>
+
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                         {% for ucast in bolna %}
                                                                             {% if ucast.id_skolenia.id == skolenie.id_skolenia.id %}
                                                                                 <tr>
+                                                                                    <td>{{ skolenie.id_typu_vybavenia.nazov }}</td>
                                                                                     <td class="hidden-xs">
                                                                                         {{ ucast.id_skolenia.level_skoleni }}
                                                                                     </td>
@@ -264,8 +266,8 @@
                                                                     <table class="table table-striped table-bordered table-list">
                                                                         <thead>
                                                                         <tr>
-                                                                            <th class="hidden-xs">Level
-                                                                            </th>
+                                                                            <th>Typ zločinu</th>
+                                                                            <th>Level</th>
                                                                             <th>Prezívka</th>
                                                                             <th>Schválené</th>
                                                                         </tr>
@@ -274,6 +276,7 @@
                                                                         {% for ucast in bolna %}
                                                                             {% if ucast.id_skolenia.id == skolenie.id_skolenia.id %}
                                                                                 <tr>
+                                                                                    <td>{{ skolenie.id_typu_zlocinu.druh }}</td>
                                                                                     <td class="hidden-xs">
                                                                                         {{ ucast.id_skolenia.level_skoleni }}
                                                                                     </td>

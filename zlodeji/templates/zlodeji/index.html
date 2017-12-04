@@ -10,7 +10,7 @@
             </a>
         </li>
     {% endif %}
-{% load tags %}
+    {% load tags %}
 {% endblock %}
 {% block body %}
 
@@ -44,7 +44,7 @@
                                                            value="False"/>
                                                     <button type="submit" class="btn btn-danger btn-xs">
                                                         <span class="glyphicon glyphicon-remove"></span>
-                                                        Superuser
+                                                        Zruš admina
                                                     </button>
                                                 </form>
                                             {% else %}
@@ -55,7 +55,7 @@
                                                            value="True"/>
                                                     <button type="submit" class="btn btn-success btn-xs">
                                                         <span class="glyphicon glyphicon-ok"></span>
-                                                        Superuser
+                                                        Urob adminom
                                                     </button>
                                                 </form>
                                             {% endif %}
@@ -68,7 +68,7 @@
                                                            value="False"/>
                                                     <button type="submit" class="btn btn-danger btn-xs">
                                                         <span class="glyphicon glyphicon-remove"></span>
-                                                        Staff
+                                                        Zruš úradníka
                                                     </button>
                                                 </form>
                                             {% else %}
@@ -79,12 +79,14 @@
                                                            value="True"/>
                                                     <button type="submit" class="btn btn-success btn-xs">
                                                         <span class="glyphicon glyphicon-ok"></span>
-                                                        Staff
+                                                        Urob úradníkom
                                                     </button>
                                                 </form>
                                             {% endif %}
-                                            <button class="btn btn-primary btn-xs" onclick="window.open('{% url 'zlodej:zlodej-update' zlodej %}', 'Pridať zločin',
-                                                    'toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600');">
+                                            <h6></h6>
+                                            <button class="btn btn-primary btn-xs"
+                                                    onclick="window.open('{% url 'zlodej:zlodej-update' zlodej %}', 'Pridať zločin',
+                                                            'toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600');">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
                                                 Upraviť profil
                                             </button>
@@ -142,14 +144,26 @@
                                                 Rajóny
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="#tab4default" data-toggle="tab">
+                                                Vybavenie
+                                            </a>
+                                        </li>
                                         <li role="presentation"><a onclick="addeviduje()">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                                             Evidovať rajón
                                         </a></li>
-                                        <li role="presentation"><a href="">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                                            Evidovať vybavenie
-                                        </a></li>
+                                        {% if user.is_staff %}
+                                            <li role="presentation"><a onclick="addvybaveniezlo()">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                                Evidovať vybavenie
+                                            </a></li>
+                                        {% else %}
+                                            <li role="presentation"><a onclick="addvybaveniezlo()">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                                Evidovať vybavenie
+                                            </a></li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="panel-body">
@@ -199,15 +213,17 @@
                                                                         {{ zlocin.id_zlocinu.hodnota_korist }}
                                                                     </td>
                                                                     <td>
-                                                                        <form action="{% url 'zlodej:urobil-delete' zlocin.id %}" method="post"
-                                                                              style="display: inline;">
-                                                                            {% csrf_token %}
-                                                                            <input type="hidden" name="zlocin_id" value="{{ zlocin.id }}"/>
-                                                                            <button type="submit" class="btn btn-danger btn-xs">
-                                                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;
-                                                                                Delete
-                                                                            </button>
-                                                                        </form>
+                                                                        {% if user.is_staff %}
+                                                                            <form action="{% url 'zlodej:urobil-delete' zlocin.id %}" method="post"
+                                                                                  style="display: inline;">
+                                                                                {% csrf_token %}
+                                                                                <input type="hidden" name="zlocin_id" value="{{ zlocin.id }}"/>
+                                                                                <button type="submit" class="btn btn-danger btn-xs">
+                                                                                    <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                                                                    Delete
+                                                                                </button>
+                                                                            </form>
+                                                                        {% endif %}
                                                                     </td>
                                                                     <td>
                                                                     </td>
@@ -245,7 +261,6 @@
                                                             <th>Level školenia</th>
                                                             <th>Poznámky</th>
                                                             <th>Schválená účasť</th>
-                                                            <th></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -269,22 +284,7 @@
                                                                                   aria-hidden="true"></span>
                                                                         {% endif %}
                                                                     </td>
-                                                                    <td>
-                                                                        {% if not zlocin.id_skolenia.schvalene %}
-                                                                            {% if zlodej.is_superuser %}
-                                                                                <form action="{% url 'zlodej:approve' zlocin.id_skolenia_id %}"
-                                                                                      method="post" style="display: inline;">
-                                                                                    {% csrf_token %}
-                                                                                    <input type="hidden" name="schvalene"
-                                                                                           value="1"/>
-                                                                                    <button type="submit" class="btn btn-success btn-xs">
-                                                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                                                        Schváliť
-                                                                                    </button>
-                                                                                </form>
-                                                                            {% endif %}
-                                                                        {% endif %}
-                                                                    </td>
+
                                                                 </tr>
                                                             {% endif %}
                                                         {% endfor %}
@@ -347,6 +347,17 @@
                                                                     <td>
                                                                         <a href="{% url 'zlodej:rajon-detail' rajon.id %}">Detail</a>
                                                                     </td>
+                                                                    <td>
+                                                                        <form action="{% url 'zlodej:eviduje-delete' rajon.id %}" method="post"
+                                                                              style="display: inline;">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="rajon_id" value="{{ rajon.id }}"/>
+                                                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                                                                Odstrániť
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
                                                                 </tr>
                                                             {% endif %}
                                                         {% endfor %}
@@ -356,8 +367,57 @@
                                             </div>
 
                                         </div>
-                                        <div class="tab-pane fade" id="tab4default">Default
-                                            4
+                                        <div class="tab-pane fade" id="tab4default">
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+
+                                                    <h3>Moje vybavenie</h3>
+
+                                                    {% if error_message %}
+                                                        <p>
+                                                            <strong>{{ error_message }}</strong>
+                                                        </p>
+                                                    {% endif %}
+
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Typ vybavenia</th>
+                                                            <th>Názov vybavenia</th>
+                                                            <th>Vlastnené od</th>
+                                                            <th>Vlastnené do</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for vybavenie in vlastnil %}
+                                                            {% if vybavenie.prezivka.prezivka == user.prezivka %}
+                                                                <tr>
+
+                                                                    <td>{{ vybavenie.id_vybavenia.id_typu_vybavenia.nazov }}</td>
+                                                                    <td>{{ vybavenie.id_vybavenia.meno }}</td>
+                                                                    <td>{{ vybavenie.od }}</td>
+                                                                    <td>{{ vybavenie.do }}</td>
+                                                                    <td>
+                                                                        <form action="{% url 'zlodej:vlastnil-delete' vybavenie.id %}" method="post"
+                                                                              style="display: inline;">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="vybavenie_id" value="{{ vybavenie.id }}"/>
+                                                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                                                                Odstrániť
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                         <div class="tab-pane fade" id="tab5default">Default
                                             5

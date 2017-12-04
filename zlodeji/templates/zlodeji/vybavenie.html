@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div style="display:inline-block;width:100%;overflow-y:auto;">
+                <div style="display:inline-block;width:100%;overflow-y:auto; overflow-x: scroll;">
 
                     <ul class="timeline timeline-horizontal">
                         {% for typ in typ_vybavenia %}
@@ -57,6 +57,7 @@
                                                         <th>Zlodej</th>
                                                         <th>Vlastnené od</th>
                                                         <th>Vlastnené do</th>
+                                                        <th></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -70,6 +71,17 @@
                                                                 <td>{{ vybavenie.prezivka }}</td>
                                                                 <td>{{ vybavenie.od }}</td>
                                                                 <td>{{ vybavenie.do }}</td>
+                                                                <td>
+                                                                    <form action="{% url 'zlodej:vlastnil-delete' vybavenie.id %}" method="post"
+                                                                          style="display: inline;">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" name="vybavenie_id" value="{{ vybavenie.id }}"/>
+                                                                        <button type="submit" class="btn btn-danger btn-xs">
+                                                                            <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                                                            Odstrániť
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
 
                                                             </tr>
                                                         {% endif %}

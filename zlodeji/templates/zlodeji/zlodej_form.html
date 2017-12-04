@@ -1,15 +1,28 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Vytvoriť rajon{% endblock %}
+{% block title %}Priradiť zločin{% endblock %}
 {% block albums_active %}active{% endblock %}
 {% load widget_tweaks %}
 {% block body %}
     <div class="container-fluid">
-
+    <h3>Upraviť zlodeja</h3>
+        <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
+            <div class="col-xs-6">
+                <button type="button" onclick="window.location.href = '{% url 'zlodej:lupeznik-add' %}'"
+                        class="btn-reg btn-info">
+                    Lupežník
+                </button>
+            </div>
+            <div class="col-xs-6">
+                <button type="button" onclick="window.location.href = '{% url 'zlodej:vydriduch-add' %}'"
+                        class="btn-reg btn-info">
+                    Vydriduch
+                </button>
+            </div>
+        </div>
         <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
 
-            <div class="col-sm-12 col-md-7">
+            <div class="col-xs-12">
                 <div class="panel-body">
-                    <h3>Evidovať rajón</h3>
 
                     <form class="form-horizontal" action="" method="post"
                           enctype="multipart/form-data">
@@ -40,17 +53,11 @@
                         {% endfor %}
 
                         <div class="form-group">
-                            <div class="">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-success">Potvrdiť</button>
                             </div>
                         </div>
-                        {% if user.is_superuser %}
-                            <div class="">
-                                <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'zlodej:rajon-add' %}'">
-                                    Vytvoriť nový rajón
-                                </button>
-                            </div>
-                        {% endif %}
+
                     </form>
 
                 </div>

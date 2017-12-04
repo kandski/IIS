@@ -1,5 +1,5 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Pridať zločin{% endblock %}
+{% block title %}Pridať vybavenie{% endblock %}
 {% block albums_active %}active{% endblock %}
 {% load widget_tweaks %}
 {% load i18n %}
@@ -7,8 +7,9 @@
     <div class="container-fluid">
 
         <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
+            <h3>Evidovať vybavenie</h3>
 
-            <div class="col-sm-12 col-md-7">
+            <div class="col-xs-12">
                 <div class="panel-body">
 
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="form_zlocin" novalidate>
@@ -44,7 +45,7 @@
                         {% endfor %}
 
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-10">
+                            <div class="col-xs-12">
                                 <button type="submit" class="btn btn-success">
                                     Potvrdiť
                                 </button>
@@ -68,13 +69,13 @@
                 monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'], // set month names
                 monthNamesShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'], // set short month names
                 dayNames: ['Neděle', 'Pondělí', 'Úterí', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'], // set days names
-                dayNamesShort: ['Ned','Pon', 'Ute', 'Str', 'Čtv', 'Pát', 'Sob'], // set short day names
-                dayNamesMin: [ 'Ne', 'Po','Ut', 'St', 'Čt', 'Pá', 'So'] // set more short days names
+                dayNamesShort: ['Ned', 'Pon', 'Ute', 'Str', 'Čtv', 'Pát', 'Sob'], // set short day names
+                dayNamesMin: ['Ne', 'Po', 'Ut', 'St', 'Čt', 'Pá', 'So'] // set more short days names
             };
 
             $.datepicker.setDefaults($.datepicker.regional['cz']);
             $("#id_od").datepicker({
-                dateFormat: "DD, d MM, yy",
+                dateFormat: "yy-mm-dd",
                 changeMonth: true,
                 firstDay: 1,
                 numberOfMonths: 2,
@@ -85,7 +86,7 @@
         });
         $(function () {
             $("#id_do").datepicker({
-                dateFormat: "DD, d MM, yy",
+                dateFormat: "yy-mm-dd",
                 defaultDate: "+1w",
                 changeMonth: true,
                 numberOfMonths: 2,

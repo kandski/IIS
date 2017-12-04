@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'prezivka', 'meno', 'password', 'odmena',
+        fields = ['username', 'email', 'prezivka', 'meno', 'password',
                   'rc', 'fotka', 'zivy']
 
     def __init__(self, *args, **kwargs):
@@ -32,8 +32,8 @@ class UserForm(forms.ModelForm):
             self.add_error('username', u"Prezívka a Použivateľské meno musia byť rovnaké!")
             self.add_error('prezivka', u"Prezívka a Použivateľské meno musia byť rovnaké!")
 
-            if username == User.objects.get(username=username).username:
-                self.add_error('username', u"Uživateľ " + username + " už existuje!")
+        if username == User.objects.get(username=username).username:
+            self.add_error('username', u"Uživateľ " + username + " už existuje!")
 
 
 class LoginForm(forms.ModelForm):
@@ -58,9 +58,40 @@ class VlastnilForm(forms.ModelForm):
         fields = ['prezivka', 'id_vybavenia', 'od', 'do']
 
 
+class VlastnilFormzlodej(forms.ModelForm):
+
+    class Meta:
+        model = Vlastnil
+        fields = ['prezivka', 'id_vybavenia', 'od', 'do']
+        exclude = ('prezivka',)
+
+    def __init__(self, *args, **kwargs):
+        self.prezivka = kwargs['initial']['prezivka']
+        super(VlastnilFormzlodej, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        obj = super(VlastnilFormzlodej, self).save(False)
+        obj.prezivka = self.prezivka
+        commit and obj.save()
+        return obj
+
+
 class EvidujeForm(forms.ModelForm):
+    # prezivka = forms.ModelChoiceField(queryset=Zlodej.objects.filter(username=))
     class Meta:
         model = Eviduje
         fields = '__all__'
+        exclude = ('prezivka',)
         widgets = {
         }
+
+    def __init__(self, *args, **kwargs):
+        self.prezivka = kwargs['initial']['prezivka']
+        super(EvidujeForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        obj = super(EvidujeForm, self).save(False)
+        obj.prezivka = self.prezivka
+        commit and obj.save()
+        return obj
+

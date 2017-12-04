@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid black;
+            padding: 0.3em 0.5em;
+            text-align: left;
+        }
+
+        dt {
+            font-weight: bold;
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Cech Zlodejov</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+    <dt>Autoři</dt>
+    <dd>Rastislav Kanda <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xkanda00@stud.fit.vutbr.cz">xkanda00@stud.fit.vutbr.cz</a> -
+        uživateľské rozhraní, databázový subsystém, Docker
+    </dd>
+    <dd>Jakub Klemens <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xkleme11@stud.fit.vutbr.cz">xkleme11@stud.fit.vutbr.cz</a> -
+        správa uživateľov, databázový subsystém
+    </dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<p>Zástupcovia všetkých rolí uživateľov</p>
+<table>
+    <tr>
+        <th>Login</th>
+        <th>Heslo</th>
+        <th>Role</th>
+    </tr>
+    <tr>
+        <td>admin</td>
+        <td>zlodej</td>
+        <td>Administrátor</td>
+    </tr>
+    <tr>
+        <td>hantyr</td>
+        <td>heslo</td>
+        <td>Úradník</td>
+    </tr>
+    <tr>
+        <td>Baran</td>
+        <td>heslo</td>
+        <td>Zlodej</td>
+    </tr>
+    <tr>
+        <td>Perlicka</td>
+        <td>heslo</td>
+        <td>Zlodej</td>
+    </tr>
+    <tr>
+        <td>Tyran</td>
+        <td>heslo</td>
+        <td>Zlodej</td>
+    </tr>
+</table>
+
+.<br>
+&#9500;&#9472;&#9472; CechZlodeju<br>
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; __init__.py<br>
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; settings.py<br>
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; urls.py<br>
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; wsgi.py<br>
+&#9500;&#9472;&#9472; Dockerfile<br>
+&#9500;&#9472;&#9472; README.md<br>
+&#9500;&#9472;&#9472; doc.html<br>
+&#9500;&#9472;&#9472; docker-compose.yml<br>
+&#9500;&#9472;&#9472; manage.py<br>
+&#9500;&#9472;&#9472; requirements.in<br>
+&#9500;&#9472;&#9472; requirements.txt<br>
+&#9492;&#9472;&#9472; zlodeji<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; __init__.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; admin.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; apps.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; forms.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; migrations<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; 0001_initial.py<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; 0002_auto_20171130_1804.py<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; 0003_auto_20171204_0113.py<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; __init__.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; models.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; static<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; zlodeji<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; images<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; Dy&#65533;\201ky.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; Sekery.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; down-curved-arrow.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; favicon<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-144x144.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-192x192.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-36x36.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-48x48.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-72x72.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; android-icon-96x96.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-114x114.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-120x120.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-144x144.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-152x152.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-180x180.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-57x57.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-60x60.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-72x72.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-76x76.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon-precomposed.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; apple-icon.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; browserconfig.xml<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; favicon-16x16.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; favicon-32x32.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; favicon-96x96.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; favicon.ico<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; manifest.json<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; ms-icon-144x144.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; ms-icon-150x150.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; ms-icon-310x310.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9474;&#160;&#160; &#9492;&#9472;&#9472; ms-icon-70x70.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; kamene.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9474;&#160;&#160; &#9492;&#9472;&#9472; mec&#65533;\214e.png<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; style.css<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; templates<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; zlodeji<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; base.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; bolna_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; detail.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; dostal_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; form-template.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; index.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; login_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; lupeznik_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; povolenia.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; povolenie_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; rajon_assign.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; rajon_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; registration_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; skolenia.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; skolenie_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; skolenievybavenia_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; skoleniezlocinu_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; stat.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; urobil_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; vlastnil_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; vybavenie.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; vybavenie_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; vydriduch_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; zlocin_form.html<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; zlodej_form.html<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; templatetags<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9500;&#9472;&#9472; __init__.py<br>
+&#160;&#160;&#160;&#160;&#9474;&#160;&#160; &#9492;&#9472;&#9472; tags.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; tests.py<br>
+&#160;&#160;&#160;&#160;&#9500;&#9472;&#9472; urls.py<br>
+&#160;&#160;&#160;&#160;&#9492;&#9472;&#9472; views.py
+
+<h2>Implementace</h2>
+<p>Zadaním bolo implementovať systém postavený na databáze z predmetu IDS. Snahou bolo pokryť všetky prípady užitia zadefinované v Use-Case diagrame
+    ako taktiež naplniť všetky tabuľky ktoré sa nachádzajú v ER - diagrame.</p>
+<h3>Django</h3>
+<p>Informačný systém, ďalej iba IS, je postavený na webovom frameworku Django verzie 2.0.</p>
+<p>V celom IS je snaha využiť čo najviac z súčastí daného frameworku, ako napríklad správa uživateľov alebo špecifikácia dotazov a definícii tabuliek
+    pomocou jazyka Python.</p>
+<p>Aplikácie postavené v Djangu sú štrukturované do modelu MVT a teda Model-View-Template.</p>
+<h4>Model</h4>
+<p>V modelovej časti sa nachádzajú všetky definície tried popisujúce tabuľky databáze a takisto spravuje aj dotazy nad databázou, čo uľahčuje a
+    častokrát aj urýchľuje prácu programátorovi.</p>
+<h4>View</h4>
+<p>V tejto časti Django špecifikuje medzičlánok medzi modelovou a šablónovou vrstvou. Časť View špecifikuje všetky operácie a agregácie ktoré sa majú
+    vykonať a dáta nad ktorými sa dané operácie majú vykonať.</p>
+<h4>Template</h4>
+<p>Zobrazovacia časť v ktorej sa dáta získané z View iba zobrazujú, alebo pracuje vo veľmi minimálnej forme akou je vypísanie a zoradenie prvkov.</p>
+<p>Technológie využité pre zobrazovanie prvkov sú: <strong>Bootstrap, JavaScript, jQuery, jQueryUI</strong></p>
+
+<h2>Instalace</h2>
+<ul>
+    <li></li>
+    <li><strong>Softwarové požadavky</strong>: Docker, docker-compose - <a href="https://store.docker.com/search?offering=community&type=edition">Docker
+        store</a></li>
+    <li>Uistiť sa že je nainštalovaný docker-compose - <i>docker-compose --version</i></li>
+    <li> Spustiť <i>docker-compose build</i></li>
+    <li> Spustiť <i>docker-compose up</i></li>
+</ul>
+
+</body>
+</html>

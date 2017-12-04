@@ -9,7 +9,7 @@
         <form class="form-horizontal container modal-content" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form.visible_fields %}
-                <div class="form-group col-md-12">
+                <div class="form-group col-xs-12">
                     {{ field.label_tag }}
 
                     {% if form.is_bound %}

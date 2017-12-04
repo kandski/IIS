@@ -93,8 +93,8 @@
                     </li>
                 {% elif user.is_authenticated %}
                     <li class="">
-                        <a href="#"
-                           style="background-color: transparent; text-decoration: none; color: #337ab7; cursor: default;">
+                        <a href="{% url 'zlodej:index' %}"
+                           style="">
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
                             Zlodej: {{ user.username }}
                         </a></li>
@@ -141,15 +141,46 @@
                         <a data-toggle="dropdown" href="#">Formuláre<span class="caret"></span> </a>
                         <ul class="dropdown-menu" role="menu">
                             <li class="">
-                                <a href="#">
+                                <a onclick="assignzlocin()">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-
+                                    Priradiť zločin
                                 </a>
                             </li>
                             <li class="">
-                                <a onclick="addzlocin()" href="">
+                                <a onclick="skoleniezlocinu()">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
-                                    Pridaj Zločin
+                                    Pridať školenie na typ zločinu
+                                </a>
+                            </li>
+                            <li class="">
+                                <a onclick="skolenievybavenia()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridať školenie na typ vybavenia
+                                </a>
+                            </li>
+                            <li class="">
+                                <a onclick="prihlasenie()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Priradiť školenie
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a onclick="addevidujestaff()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Priradiť rajón
+                                </a>
+                            </li>
+                            <li class="">
+                                <a onclick="dostal()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Nové povolenie
+                                </a>
+                            </li>
+                            <li class="">
+                                <a onclick="addzlodej()" href="">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Vytvoriť zlodeja
                                 </a>
                             </li>
                             <li class="">
@@ -162,6 +193,18 @@
                                 <a href="" onclick="addskolenie()">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                                     Pridať školenie
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="" onclick="addvydriduch()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridať vydriducha
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="" onclick="addlupeznik()">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                                    Pridať lupežníka
                                 </a>
                             </li>
                         </ul>
@@ -208,20 +251,48 @@
             window.open("{% url 'zlodej:urobil-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
         }
 
+        function skoleniezlocinu() {
+            window.open("{% url 'zlodej:skoleniezlocinu-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+        function skolenievybavenia() {
+            window.open("{% url 'zlodej:skolenievybavenia-add' %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+
+
         function editzlodej() {
-            window.open("{% url 'zlodej:zlodej-update' user.username %}", "Pridať zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+            window.open("{% url 'zlodej:zlodej-update' user.username %}", "Upraviť zlodeja", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
         }
 
         function assignzlocin() {
             window.open("{% url 'zlodej:urobil-add' %}", "Priradiť zločin", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
         }
 
+        function addzlodej() {
+            window.open("{% url 'zlodej:zlodej-add' %}", "Vytvorenie zlodeja", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+
+        function addvydriduch() {
+            window.open("{% url 'zlodej:vydriduch-add' %}", "Vytvorenie zlodeja", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+
+        function addlupeznik() {
+            window.open("{% url 'zlodej:lupeznik-add' %}", "Vytvorenie zlodeja", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+
         function addvybavenie() {
             window.open("{% url 'zlodej:vlastnil-add' %}", "Pridať vybavenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
         }
 
+        function addvybaveniezlo() {
+            window.open("{% url 'zlodej:vlastnil-addzlodej' %}", "Pridať vybavenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=600,height=600");
+        }
+
         function addskolenie() {
             window.open("{% url 'zlodej:skolenie-add' %}", "Pridať školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+        }
+
+        function addevidujestaff() {
+            window.open("{% url 'zlodej:eviduje-add' %}", "Evidovať rajon", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
         }
 
         function addeviduje() {
@@ -231,6 +302,11 @@
         function prihlasenie() {
             window.open("{% url 'zlodej:bolna-add' %}", "Prihlasiť na školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
         }
+
+        function dostal() {
+            window.open("{% url 'zlodej:dostal-add' %}", "Prihlasiť na školenie", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=500,width=600,height=600");
+        }
+
         function reload_parent() {
             window.location.reload()
             window.parent.opener.reload();

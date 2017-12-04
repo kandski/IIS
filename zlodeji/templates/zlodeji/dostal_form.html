@@ -1,27 +1,28 @@
 {% extends 'zlodeji/base.html' %}
-{% block title %}Evidovať školenie{% endblock %}
+{% block title %}Priradiť povolenie na zločin{% endblock %}
 {% block albums_active %}active{% endblock %}
-
+{% load widget_tweaks %}
 {% block body %}
     <div class="container-fluid">
 
-        <div class="row">
-            <h3>Evidovať školenie</h3>
+        <div class="row" style="width: 50%; margin: 0 auto; text-align: center;">
+
             <div class="col-xs-12">
                 <div class="panel-body">
+                    <h3>Evidovať povolenie</h3>
                     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% include 'zlodeji/form-template.html' %}
                         <div class="form-group">
-                            <div class="col-xs-12">
+                            <div class="">
                                 <button type="submit" class="btn btn-success">Potvrdiť</button>
                             </div>
                         </div>
                         <div class="">
-                            <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'zlodej:skolenie-add' %}'">
-                                Vytvoriť nové školenie
-                            </button>
-                        </div>
+                                <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'zlodej:povolenie-add' %}'">
+                                    Vytvoriť nové povolenie
+                                </button>
+                            </div>
                     </form>
 
                 </div>

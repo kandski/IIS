@@ -21,11 +21,14 @@
                     <th align="center">Doba platnosti v dňoch</th>
                     <th align="center">Zlodej</th>
                     <th align="center">Druh zločinu</th>
+                    {% if user.is_staff %}
+                        <th align="center"></th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for povolenie in dostal %}
-                    {% if user.is_superuser %}
+                    {% if user.is_staff %}
                         <h1></h1>
                         <tr>
                             <td align="center">
@@ -36,6 +39,17 @@
                             </td>
                             <td align="center">{{ povolenie.prezivka }}</td>
                             <td align="center">{{ povolenie.id_povolenia.id_zlocinu.id_typu_zlocinu.druh }}</td>
+                            <td align="center">
+                                <form action="{% url 'zlodej:dostal-delete' povolenie.id %}" method="post"
+                                      style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="povolenie_id" value="{{ povolenie.id }}"/>
+                                    <button type="submit" class="btn btn-danger btn-xs">
+                                        <span class="glyphicon glyphicon-remove"></span>&nbsp;
+                                        Odstrániť
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     {% else %}
                         {% if povolenie.prezivka == user.prezivka %}
