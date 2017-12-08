@@ -37,6 +37,8 @@ class IndexView(generic.ListView):
         context['eviduje'] = Eviduje.objects.all()
         context['vlastnil'] = Vlastnil.objects.all()
         context['bolna'] = BolNa.objects.all()
+        context['all_vydriduch'] = Vydriduch.objects.all()
+        context['all_lupeznik'] = Lupeznik.objects.all()
         return context
 
 

@@ -105,13 +105,13 @@
                         </div>
                         <div class="">
                             <div class="well wellwell">
-                                <h3>Najlepší zlodeji podľa počtu  zločinov</h3>
+                                <h3>Najlepší zlodeji podľa počtu zločinov</h3>
                                 <ul class="list-group">
                                     {% sum_zlocinov as sumZ %}
                                     {% for key, values in sumZ.items|dictsortreversed:1 %}
                                         <li class="list-group-item">
                                             {{ key }}
-                                                <span class="badge">{{ values }}
+                                            <span class="badge">{{ values }}
                                                 </span>
                                         </li>
                                     {% endfor %}
@@ -126,7 +126,7 @@
                                     {% for key, values in sumK.items|dictsortreversed:1 %}
                                         <li class="list-group-item">
                                             {{ key }}
-                                                <span class="badge">{{ values }}
+                                            <span class="badge">{{ values }}
                                                 </span>
                                         </li>
                                     {% endfor %}

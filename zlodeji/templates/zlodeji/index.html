@@ -423,6 +423,32 @@
                                             5
                                         </div>
                                     </div>
+                                    {% for lupeznik in all_lupeznik %}
+                                        {% if lupeznik.zlodej.prezivka == user.prezivka %}
+                                            <div class="">
+                                                <div class="well">
+                                                    <h3>Lupežník</h3>
+                                                    <ul class="list-group">
+                                                        <h6>Počet zabitých: {{ lupeznik.pocet_zabitych }}</h6>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for vydriduch in all_vydriduch %}
+                                        {% if vydriduch.zlodej.prezivka == user.prezivka %}
+                                            <div class="">
+                                                <div class="well">
+                                                    <h3>Vydriduch</h3>
+                                                    <ul class="list-group">
+                                                        <h4>Provízia: {{ vydriduch.provizia }}%</h4>
+                                                        <h4>Vypožičané peniaze: {{ vydriduch.peniaze}}ℌ</h4>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

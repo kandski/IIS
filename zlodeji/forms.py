@@ -37,7 +37,8 @@ class UserForm(forms.ModelForm):
 
 
 class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label=u"Prihlasovacie meno", help_text=u"Povinné. 150 znakov alebo menej. Môže obsahovať iba písmená, čísla a znaky @/./+/-/_ výhradne.")
+    password = forms.CharField(label="Heslo", widget=forms.PasswordInput)
 
     class Meta:
         model = User
